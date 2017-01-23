@@ -432,7 +432,7 @@ node_t* ll_sorted_insert_value(node_t* head, int data)
 	}
 }
 
-node_t* ll_get_middle_node(node_t* head)
+node_t* ll_get_middle_node(node_t* head, int *even)
 {
 	node_t *slow = head, *fast = head;
 
@@ -440,9 +440,65 @@ node_t* ll_get_middle_node(node_t* head)
 		slow = slow->next;
 		fast = fast->next->next;
 	}
+
+	if (even) {
+		*even = fast ? 0 : 1;
+	}
 	return slow;
 }
 
+
+int ll_is_palidrome(node_t* head)
+{
+	node_t *curr, *middle, *next;
+	node_t *stack_top = NULL, *stack_curr;
+	int result = 1, even = 0;
+
+	if (!head || !head->next) {
+		printf("%s: List %s\n", __FUNCTION__, head ? "has-single-node": "is-empty");
+		return 0;
+	}
+
+	curr = middle = ll_get_middle_node(head, &even);
+	if (!even) {
+		curr = middle->next;
+	}
+	/*Load the second half of the nodes on the stack*/
+	while (curr) {
+		next = curr->next;
+		curr->next = stack_top;
+		stack_top = curr;
+		curr = next;
+	}
+
+	/*Compare the two lists till the middle*/
+	curr = head;
+	stack_curr = stack_top;
+	while(curr->next != middle) {
+		if (curr->data != stack_curr->data) {
+			result = 0;
+		}
+		curr = curr->next;
+		stack_curr = stack_curr->next;
+	}
+
+	/*Recover the list. Curr is already just before the middle.*/
+	if (!even) {
+		/* If there are odd number of nodes then use the middle
+		 * node as the starting point. */
+		curr = middle;
+	}
+	curr->next = NULL;
+	stack_curr = stack_top;
+	while (stack_top) {
+		stack_curr = stack_top->next;
+		stack_top->next = curr->next;
+		curr->next = stack_top;
+		stack_top = stack_curr;
+	}
+
+	return result;
+}
 
 
 
