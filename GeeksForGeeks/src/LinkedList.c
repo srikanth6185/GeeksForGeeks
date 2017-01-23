@@ -443,11 +443,6 @@ node_t* ll_get_middle_node(node_t* head)
 	return slow;
 }
 
-int ll_check_is_palindrome(node_t *head)
-{
-
-}
-
 
 
 
