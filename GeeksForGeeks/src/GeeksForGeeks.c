@@ -223,10 +223,7 @@ void test_ll_intersection(void)
 		return;
 	}
 
-	ll_print_rec(list1);
-	ll_print_rec(list2);
 
-/*
 	ll_print(list1);
 	ll_print(list2);
 	ll_get_intersect_node(list1, list2);
@@ -255,10 +252,28 @@ void test_ll_intersection(void)
 	ll_get_intersect_node(list1, list2);
 
 	list1->next->next->next->next->next = NULL;
-*/
+
 	ll_free(&list1);
 	ll_free(&list2);
 }
+
+void test_remove_duplicates(void)
+{
+	int n = 10, arr[10] = {5,5,7,7,10,25,25,25,33,33};
+
+	node_t* head;
+
+	if (ll_create(&head, n, arr) == LL_FALSE) {
+		printf("%s: list create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	ll_print(head);
+	ll_remove_duplicates(head);
+	ll_print(head);
+	ll_free(&head);
+}
+
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
@@ -269,7 +284,8 @@ int main(void) {
 	//test_ll_sorted_insert();
 	//test_middle();
 	//test_ll_palindrome();
-	test_ll_intersection();
+	//test_ll_intersection();
+	test_remove_duplicates();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

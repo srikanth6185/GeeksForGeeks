@@ -64,7 +64,7 @@ int ll_free(node_t **head)
 
 void ll_print(node_t *head)
 {
-    printf("%s: START\n", __FUNCTION__);
+   // printf("%s: START\n", __FUNCTION__);
     while ( head) {
         printf("%d -> ", head->data);
         head = head->next;
@@ -549,4 +549,19 @@ node_t* ll_get_intersect_node(node_t* list1, node_t* list2)
 	return NULL;
 }
 
-
+void ll_remove_duplicates(node_t *head)
+{
+	node_t *curr = head, *prev = NULL;
+	printf("%s\n", __FUNCTION__);
+	while(curr) {
+		if (prev && (prev->data == curr->data)) {
+			prev->next = curr->next;
+			free(curr);
+			curr = prev->next;
+			continue;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	return;
+}

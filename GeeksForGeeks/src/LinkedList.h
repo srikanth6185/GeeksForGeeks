@@ -35,6 +35,8 @@ node_t* ll_sorted_insert_value(node_t* head, int data);
 node_t* ll_get_middle_node(node_t* head, int *even);
 int ll_is_palidrome(node_t* head);
 node_t* ll_get_intersect_node(node_t* list1, node_t* list2);
+void ll_remove_duplicates(node_t *head);
+
 void test_ll_merge_sort(void);
 
 #endif // _LINKED_LIST_H_
