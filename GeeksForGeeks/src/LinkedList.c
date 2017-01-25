@@ -69,7 +69,18 @@ void ll_print(node_t *head)
         printf("%d -> ", head->data);
         head = head->next;
     }
-    printf("NULL\n");
+    printf("NULL\n\n");
+}
+
+void ll_print_rec(node_t *head)
+{
+	if (head) {
+		ll_print_rec(head->next);
+		printf("%d<-", head->data);
+	} else {
+		printf("NULL<-");
+	}
+	return;
 }
 
 int ll_delete_nth_node(node_t **head, int n)
@@ -159,7 +170,7 @@ int ll_add_node(node_t **head, int val)
 int ll_get_count(node_t *head)
 {
     int cnt = 0;
-    printf("%s: START\n", __FUNCTION__);
+    //printf("%s: START\n", __FUNCTION__);
     while(head) {
         cnt++; head = head->next;
     }
@@ -496,10 +507,46 @@ int ll_is_palidrome(node_t* head)
 		curr->next = stack_top;
 		stack_top = stack_curr;
 	}
-
 	return result;
 }
 
+node_t* ll_get_intersect_node(node_t* list1, node_t* list2)
+{
+	int c1, c2, diff;
+	node_t *curr1 = list1, *curr2 = list2;
 
+	c1 = ll_get_count(list1);
+	c2 = ll_get_count(list2);
+
+	if (c1 > c2) {
+		diff = c1 - c2;
+		printf("%s: Diff in length is %d\n", __FUNCTION__, diff);
+
+		while (diff) {
+			curr1 = curr1->next;
+			diff--;
+		}
+	} else if (c1 < c2){
+		diff = c2 - c1;
+		printf("%s: Diff in length is %d\n", __FUNCTION__, diff);
+
+		while (diff) {
+			curr2 = curr2->next;
+			diff--;
+		}
+	}
+
+	while (curr1 && curr2) {
+		if (curr1 == curr2) {
+			printf("%s: Found intersection at (%p)->%d\n", __FUNCTION__, curr1, curr1->data);
+			return curr1;
+		}
+		curr1 = curr1->next;
+		curr2 = curr2->next;
+	}
+
+	printf("%s: No intersection node\n", __FUNCTION__);
+	return NULL;
+}
 
 

@@ -19,6 +19,7 @@ int ll_create(node_t **head, unsigned int n, int *input_arr);
 int ll_free(node_t **head);
 int ll_delete_nth_node(node_t **head, int n);
 void ll_print(node_t *head);
+void ll_print_rec(node_t *head);
 int ll_delete_val_node(node_t **head, int val, unsigned char all);
 int ll_add_node(node_t **head, int val);
 int ll_get_count(node_t *head);
@@ -33,6 +34,7 @@ node_t* ll_sorted_merge(node_t* list1, node_t* list2);
 node_t* ll_sorted_insert_value(node_t* head, int data);
 node_t* ll_get_middle_node(node_t* head, int *even);
 int ll_is_palidrome(node_t* head);
+node_t* ll_get_intersect_node(node_t* list1, node_t* list2);
 void test_ll_merge_sort(void);
 
 #endif // _LINKED_LIST_H_

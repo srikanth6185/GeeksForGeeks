@@ -206,6 +206,59 @@ void test_ll_palindrome(void)
 	ll_free(&head);
 }
 
+void test_ll_intersection(void)
+{
+    int n1 = 5, n2 = 6;
+	int arr1[5] = {1,2,3,4,5};
+	int arr2[6] = {11,22,33,44,55,66};
+	node_t *list1, *list2;
+
+	if (ll_create(&list1, n1, arr1) == LL_FALSE) {
+		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	if (ll_create(&list2, n2, arr2) == LL_FALSE) {
+		printf("%s: list 2 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	ll_print_rec(list1);
+	ll_print_rec(list2);
+
+/*
+	ll_print(list1);
+	ll_print(list2);
+	ll_get_intersect_node(list1, list2);
+
+
+	list1->next->next->next->next->next = list2;
+	ll_print(list1);
+	ll_print(list2);
+	ll_get_intersect_node(list1, list2);
+
+
+	list1->next->next->next->next->next = list2->next;
+	ll_print(list1);
+	ll_print(list2);
+	ll_get_intersect_node(list1, list2);
+
+	list1->next->next->next->next->next = list2->next->next->next;
+	ll_print(list1);
+	ll_print(list2);
+	ll_get_intersect_node(list1, list2);
+
+
+	list1->next->next->next->next->next = list2->next->next->next->next->next;
+	ll_print(list1);
+	ll_print(list2);
+	ll_get_intersect_node(list1, list2);
+
+	list1->next->next->next->next->next = NULL;
+*/
+	ll_free(&list1);
+	ll_free(&list2);
+}
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
@@ -215,9 +268,8 @@ int main(void) {
 	//test_ll_merge_sort();
 	//test_ll_sorted_insert();
 	//test_middle();
-	test_ll_palindrome();
+	//test_ll_palindrome();
+	test_ll_intersection();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }
-
-/*Test comment 1*/
