@@ -257,11 +257,12 @@ void test_ll_intersection(void)
 	ll_free(&list2);
 }
 
-void test_remove_duplicates(void)
+void test_generic(void)
 {
-	int n = 10, arr[10] = {5,5,7,7,10,25,25,25,33,33};
-
-	node_t* head;
+	int n = 11, arr[11] = {5,5,7,7,10,25,25,25,33,33,44};
+	int n1 = 5, arr1[5] = {1,2,3,5,6};
+	int n2 = 3, arr2[3] = {0,3,6};
+	node_t* head, *l1, *l2, *nl;
 
 	if (ll_create(&head, n, arr) == LL_FALSE) {
 		printf("%s: list create failure!!!\n", __FUNCTION__);
@@ -270,10 +271,69 @@ void test_remove_duplicates(void)
 
 	ll_print(head);
 	ll_remove_duplicates(head);
+
+	ll_print(head);
+	head = ll_last2front(head);
+	ll_print(head);
+
+	ll_del_alt_nodes(head);
 	ll_print(head);
 	ll_free(&head);
+
+	if (ll_create(&l1, n1, arr1) == LL_FALSE) {
+		printf("%s: list create failure!!!\n", __FUNCTION__);
+		return;
+	}
+	if (ll_create(&l2, n2, arr2) == LL_FALSE) {
+		printf("%s: list create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	nl = ll_get_intersection_list(l1, l2);
+	ll_print(l1);
+	ll_print(l2);
+	ll_print(nl);
+
+	ll_free(&l1);
+	ll_free(&l2);
+	ll_free(&nl);
 }
 
+void test_alt_split_list(void)
+{
+	int n = 11, arr[11] = {1,2,1,2,1,2,1,2,1,2,1};
+	node_t *l , *l1, *l2;
+	if (ll_create(&l, n, arr) == LL_FALSE) {
+		printf("%s: list create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	ll_print(l);
+	ll_alt_split_list(l, &l1, &l2);
+
+	ll_print(l1);
+	ll_print(l2);
+
+	ll_free(&l1);
+	ll_free(&l2);
+}
+
+void test_reverse_kll(void)
+{
+    int n1 = 8;
+	int arr1[8] = {1,2,3,4,5,6,7,8};
+	node_t *list1;
+	if (ll_create(&list1, n1, arr1) == LL_FALSE) {
+		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	ll_print(list1);
+	list1 = ll_reverse_size_k(list1, 3);
+	ll_print(list1);
+
+	ll_free(&list1);
+}
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
@@ -285,7 +345,9 @@ int main(void) {
 	//test_middle();
 	//test_ll_palindrome();
 	//test_ll_intersection();
-	test_remove_duplicates();
-    printf("ALL TESTS COMPLETE!!!\n");
+	//test_generic();
+	//test_alt_split_list();
+	test_reverse_kll();
+	printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

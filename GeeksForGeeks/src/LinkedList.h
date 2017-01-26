@@ -36,8 +36,12 @@ node_t* ll_get_middle_node(node_t* head, int *even);
 int ll_is_palidrome(node_t* head);
 node_t* ll_get_intersect_node(node_t* list1, node_t* list2);
 void ll_remove_duplicates(node_t *head);
+node_t* ll_last2front(node_t* head);
+node_t* ll_get_intersection_list(node_t* l1, node_t* l2);
+void ll_del_alt_nodes(node_t *l);
+void ll_alt_split_list(node_t *l, node_t **l1, node_t **l2);
+node_t* ll_reverse_size_k(node_t *l , int k);
 
-void test_ll_merge_sort(void);
 
 #endif // _LINKED_LIST_H_
 

@@ -565,3 +565,154 @@ void ll_remove_duplicates(node_t *head)
 	}
 	return;
 }
+
+
+node_t* ll_last2front(node_t* head)
+{
+	node_t *curr = head, *prev = NULL;
+	printf("%s\n", __FUNCTION__);
+	while (curr) {
+		if (curr->next == NULL) {
+			break;
+		}
+		prev = curr; curr = curr->next;
+	}
+
+	if (prev) {
+		prev->next = NULL;
+		curr->next = head;
+	}
+	return curr;
+}
+
+node_t* ll_get_intersection_list(node_t* l1, node_t* l2)
+{
+	node_t *new_ll, *curr;
+	new_ll = curr = NULL;
+	printf("%s\n", __FUNCTION__);
+	while (l1 && l2) {
+		if (l1->data == l2->data) {
+			if (new_ll) {
+				curr->next = (node_t*)malloc(sizeof(node_t));
+				curr = curr->next;
+			} else {
+				new_ll = curr = (node_t*)malloc(sizeof(node_t));
+			}
+			curr->data = l1->data;
+			curr->next = NULL;
+			l1 = l1->next;
+			l2 = l2->next;
+		} else if (l1->data < l2->data) {
+			l1 = l1->next;
+		} else {
+			l2 = l2->next;
+		}
+	}
+	return new_ll;
+}
+
+void ll_del_alt_nodes(node_t *l)
+{
+	node_t *c = l, *t;
+	printf("%s\n", __FUNCTION__);
+	while (c && c->next) {
+		t = c->next;
+		c->next = c->next->next;
+		free(t);
+		c = c->next;
+	}
+	return;
+}
+
+
+void ll_alt_split_list(node_t *l, node_t **l1, node_t **l2)
+{
+	node_t *c = l, *n1 = NULL, *n2 = NULL;
+	int alt = 1;
+	printf("%s\n", __FUNCTION__);
+	*l1 = *l2 = NULL;
+	while (c) {
+		if (alt) {
+			if (!n1) {
+				*l1 = c;
+			} else {
+				n1->next = c;
+			}
+			n1 = c;
+			c = c->next;
+			n1->next = NULL;
+		} else {
+			if (!n2) {
+				*l2 = c;
+			} else {
+				n2->next = c;
+			}
+			n2 = c;
+			c = c->next;
+			n2->next = NULL;
+		}
+		alt = !alt;
+	}
+	return;
+}
+
+
+
+node_t* ll_reverse_size_k(node_t *l , int k)
+{
+	node_t *c = l, *p = NULL, *t, *kh = NULL, *pkh, *nl = NULL;
+	int s = k;
+	printf("%s\n", __FUNCTION__);
+	if (s <= 0) {
+		return l;
+	}
+
+	while (c) {
+		if (s) {
+			if (s == k) {
+				pkh = kh;
+				kh = c;
+			}
+			t = c->next;
+			c->next = p;
+			p = c;
+			c = t;
+			s--;
+		}
+
+		if (!s || !c) {
+			kh->next = c;
+			if (pkh) {
+				pkh->next = p;
+			}
+			s = k;
+			if (!nl) {
+				nl = p;
+			}
+		}
+	}
+
+	return nl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
