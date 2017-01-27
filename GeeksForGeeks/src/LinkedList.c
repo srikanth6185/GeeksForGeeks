@@ -695,14 +695,58 @@ node_t* ll_reverse_size_k(node_t *l , int k)
 	return nl;
 }
 
+node_t* ll_rec_rev_k(node_t *head, int c)
+{
+	node_t *curr = head, *prev = NULL, *temp;
+	int k = 0;
 
+	printf("%s\n", __FUNCTION__);
+	while (curr && (k < c)) {
+		temp = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = temp;
+		k++;
+	}
 
+	if (head) {
+		head->next = ll_rec_rev_k(curr, c);
+	}
 
+	return prev;
+}
 
+node_t* ll_segregate_even_odd(node_t* head)
+{
+	node_t *c = head, *p = NULL, *eh = NULL, *ec, *oh = NULL;
+	printf("%s\n", __FUNCTION__);
+	while (c) {
+		if ((c->data % 2) == 0) {
+			if (!eh) {
+				eh = ec = c;
+			} else {
+				ec->next = c;
+				ec = c;
+			}
+			if (p) {
+				p->next = c->next;
+			}
 
+			if (oh) {
+				ec->next = oh;
+			}
+			c = c->next;
+		} else {
+			if (!oh) {
+				oh = c;
+			}
+			p = c;
+			c = c->next;
+		}
+	}
 
-
-
+	return (eh ? eh : head);
+}
 
 
 

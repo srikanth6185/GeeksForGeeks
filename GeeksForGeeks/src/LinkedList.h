@@ -41,7 +41,8 @@ node_t* ll_get_intersection_list(node_t* l1, node_t* l2);
 void ll_del_alt_nodes(node_t *l);
 void ll_alt_split_list(node_t *l, node_t **l1, node_t **l2);
 node_t* ll_reverse_size_k(node_t *l , int k);
-
+node_t* ll_rec_rev_k(node_t *head, int c);
+node_t* ll_segregate_even_odd(node_t* head);
 
 #endif // _LINKED_LIST_H_
 

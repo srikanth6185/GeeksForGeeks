@@ -329,7 +329,11 @@ void test_reverse_kll(void)
 	}
 
 	ll_print(list1);
-	list1 = ll_reverse_size_k(list1, 3);
+	//list1 = ll_reverse_size_k(list1, 3);
+	list1 = ll_rec_rev_k(list1,3);
+	ll_print(list1);
+
+	list1 = ll_segregate_even_odd(list1);
 	ll_print(list1);
 
 	ll_free(&list1);
