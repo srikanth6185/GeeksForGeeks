@@ -748,9 +748,22 @@ node_t* ll_segregate_even_odd(node_t* head)
 	return (eh ? eh : head);
 }
 
-
-
-
+int ll_detect_and_remove_loop(node_t *head)
+{
+	node_t *slow = head, *fast = head;
+	while (fast && fast->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+		if (slow == fast) {
+			break;
+		}
+	}
+	if (fast && fast->next) {
+		slow->next = NULL;
+		return 1;
+	}
+	return 0;
+}
 
 
 

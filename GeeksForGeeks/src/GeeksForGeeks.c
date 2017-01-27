@@ -322,7 +322,7 @@ void test_reverse_kll(void)
 {
     int n1 = 8;
 	int arr1[8] = {1,2,3,4,5,6,7,8};
-	node_t *list1;
+	node_t *list1, *curr;
 	if (ll_create(&list1, n1, arr1) == LL_FALSE) {
 		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
 		return;
@@ -336,8 +336,18 @@ void test_reverse_kll(void)
 	list1 = ll_segregate_even_odd(list1);
 	ll_print(list1);
 
+	curr = list1;
+	while (curr->next) {
+		curr = curr->next;
+	}
+
+	curr->next = list1->next->next;
+	printf("%s: list has loop : %d \n", __FUNCTION__, ll_detect_and_remove_loop(list1));
+	ll_print(list1);
+
 	ll_free(&list1);
 }
+
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
