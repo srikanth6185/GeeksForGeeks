@@ -748,6 +748,40 @@ node_t* ll_segregate_even_odd(node_t* head)
 	return (eh ? eh : head);
 }
 
+void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
+{
+	int k = 1;
+	node_t *curr = loop_node, *prev = NULL;
+
+
+	/*Count number of nodes.*/
+	while (curr) {
+		if (curr == loop_node) {
+			break;
+		}
+		curr = curr->next;
+		k++;
+	}
+
+	curr = head;
+	while (k > 0) {
+		prev = curr;
+		curr = curr->next;
+		k--;
+	}
+
+	loop_node = curr;
+	curr = head;
+	while (curr != loop_node) {
+		curr = curr->next;
+		prev = loop_node;
+		loop_node = loop_node->next;
+	}
+
+	prev->next = NULL;
+	return;
+}
+
 int ll_detect_and_remove_loop(node_t *head)
 {
 	node_t *slow = head, *fast = head;
@@ -759,8 +793,8 @@ int ll_detect_and_remove_loop(node_t *head)
 		}
 	}
 	if (fast && fast->next) {
-		slow->next = NULL;
-		return 1;
+		/*remove loop*/
+		ll_remove_loop_floyd(fast, head);
 	}
 	return 0;
 }
