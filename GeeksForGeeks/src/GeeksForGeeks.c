@@ -293,10 +293,18 @@ void test_generic(void)
 	ll_print(l1);
 	ll_print(l2);
 	ll_print(nl);
+	ll_free(&nl);
+
+	nl = ll_add_lists(l1,l2);
+	ll_print(nl);
+	ll_free(&nl);
+
+	ll_print(l1);
+	ll_delete_node_seemless(l1, l1->next->next->next->next);
+	ll_print(l1);
 
 	ll_free(&l1);
 	ll_free(&l2);
-	ll_free(&nl);
 }
 
 void test_alt_split_list(void)
@@ -359,9 +367,9 @@ int main(void) {
 	//test_middle();
 	//test_ll_palindrome();
 	//test_ll_intersection();
-	//test_generic();
+	test_generic();
 	//test_alt_split_list();
-	test_reverse_kll();
+	//test_reverse_kll();
 	printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

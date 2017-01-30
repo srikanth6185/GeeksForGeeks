@@ -44,7 +44,8 @@ node_t* ll_reverse_size_k(node_t *l , int k);
 node_t* ll_rec_rev_k(node_t *head, int c);
 node_t* ll_segregate_even_odd(node_t* head);
 int ll_detect_and_remove_loop(node_t *head);
-
+node_t* ll_add_lists(node_t *l1, node_t* l2);
+void ll_delete_node_seemless(node_t *l , node_t* del_node);
 #endif // _LINKED_LIST_H_
 
 

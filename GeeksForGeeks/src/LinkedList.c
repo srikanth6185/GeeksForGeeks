@@ -585,6 +585,7 @@ node_t* ll_last2front(node_t* head)
 	return curr;
 }
 
+/*Sorted lists*/
 node_t* ll_get_intersection_list(node_t* l1, node_t* l2)
 {
 	node_t *new_ll, *curr;
@@ -752,9 +753,10 @@ void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
 {
 	int k = 1;
 	node_t *curr = loop_node, *prev = NULL;
-
+	printf("%s\n", __FUNCTION__);
 
 	/*Count number of nodes.*/
+	curr = curr ? curr->next : NULL;
 	while (curr) {
 		if (curr == loop_node) {
 			break;
@@ -785,6 +787,7 @@ void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
 int ll_detect_and_remove_loop(node_t *head)
 {
 	node_t *slow = head, *fast = head;
+	printf("%s\n", __FUNCTION__);
 	while (fast && fast->next) {
 		slow = slow->next;
 		fast = fast->next->next;
@@ -799,7 +802,80 @@ int ll_detect_and_remove_loop(node_t *head)
 	return 0;
 }
 
+node_t* ll_create_node(int val)
+{
+	node_t *new_node = (node_t *)malloc(sizeof(node_t));
+	printf("%s\n", __FUNCTION__);
+	new_node->data = val;
+	new_node->next = NULL;
+	return new_node;
+}
 
+node_t* ll_add_lists(node_t *l1, node_t* l2) {
+	node_t *nnode, *head, *curr = NULL;
+	int carry = 0;
+	printf("%s\n", __FUNCTION__);
+	while (l1 || l2 || carry) {
+		nnode = ll_create_node(0);
+		if (l1 && l2) {
+			nnode->data = (l1->data + l2->data + carry);
+			carry = nnode->data / 10;
+			nnode->data = nnode->data % 10;
+			l1 = l1->next;
+			l2 = l2->next;
+		} else if (l1 || l2) {
+			nnode->data = (l1 ? l1->data : l2->data) + carry;
+			carry = nnode->data / 10;
+			nnode->data = nnode->data % 10;
+			if (l1) {
+				l1 = l1->next;
+			} else {
+				l2 = l2->next;
+			}
+		} else {
+			nnode->data = carry;
+			break;
+		}
+
+		if (curr) {
+			curr->next = nnode;
+			curr = nnode;
+		} else {
+			head = curr = nnode;
+		}
+	}
+	return head;
+}
+
+void ll_delete_node_seemless(node_t *l , node_t* del_node)
+{
+	node_t *prev = NULL;
+
+	printf("%s\n",__FUNCTION__);
+	while( l ) {
+		if (l == del_node) {
+			break;
+		}
+		prev = l;
+		l = l->next;
+	}
+
+	if (l) {
+		while (l && l->next) {
+			l->data = l->next->data;
+			prev = l;
+			l = l->next;
+		}
+
+		if (l) {
+			if (prev) {
+				prev->next = NULL;
+			}
+			free(l);
+		}
+	}
+	return;
+}
 
 
 
