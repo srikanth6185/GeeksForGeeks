@@ -1020,14 +1020,41 @@ node_t* ll_get_intersection(node_t *l1, node_t *l2)
 
 	return head;
 }
+/*********Add 2 lists without modifying the original lists********/
+node_t* ll_add_same_size_lists(node_t *l1, node_t *l2, int *carry)
+{
+	node_t *result = NULL;
+	if (l1 && l2) {
+		result = ll_create_node(0);
+		result->next = ll_add_same_size_lists(l1->next, l2->next, carry);
+		result->data = (l1->data + l2->data + *carry) % 10;
+		*carry = (l1->data + l2->data + *carry) / 10;
+		return result;
+	}
+	return NULL;
+}
 
 
+void ll_add_carry_to_remaining_list(node_t* l, node_t *stop_node, node_t** result, int *carry)
+{
+	node_t *result_node;
+	if (l && (l != stop_node)) {
+		result_node = ll_create_node(0);
+		ll_add_carry_to_remaining_list(l->next, stop_node, result, carry);
+		result_node->data = (l->data + *carry) % 10;
+		*carry = (l->data + *carry) / 10;
+		result_node->next = *result;
+		*result = result_node;
+	}
+	return;
+}
 
+/*Lists are MSB to LSB and we cannot modify the original list.*/
+node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2)
+{
 
-
-
-
-
+	return NULL;
+}
 
 
 
