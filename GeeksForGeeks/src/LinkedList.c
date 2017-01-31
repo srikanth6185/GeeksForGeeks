@@ -347,55 +347,6 @@ node_t* ll_merge(node_t* list1, node_t* list2)
     return new_list;
 }
 
-node_t* ll_sorted_merge(node_t* list1, node_t* list2)
-{
-    node_t *curr1 = list1, *curr2 = list2,*new_list = NULL;
-    node_t *new_curr = NULL;
-
-    printf("%s: START\n", __FUNCTION__);
-
-    while (curr1 && curr2) {
-        if (curr1->data <= curr2->data) {
-            if(!new_list) {
-                new_list = new_curr = curr1;
-            } else {
-                new_curr->next = curr1;
-                new_curr = curr1;
-            }
-            curr1 = curr1->next;
-        } else {
-            if(!new_list) {
-                new_list = new_curr = curr2;
-            } else {
-                new_curr->next = curr2;
-                new_curr = curr2;
-            }
-            curr2 = curr2->next;
-        }
-    }
-
-
-    if (curr1) {
-        if(!new_list) {
-            new_list = new_curr = curr1;
-        } else {
-            new_curr->next = curr1;
-            new_curr = curr1;
-        }
-    }
-
-    if (curr2) {
-        if(!new_list) {
-            new_list = new_curr = curr2;
-        } else {
-            new_curr->next = curr2;
-            new_curr = curr2;
-        }
-    }
-
-    return new_list;
-}
-
 node_t* ll_reverse(node_t* head)
 {
     node_t* curr = head, *prev = NULL;
@@ -876,6 +827,218 @@ void ll_delete_node_seemless(node_t *l , node_t* del_node)
 	}
 	return;
 }
+
+
+/***************** Merge Sort of linked lists************************/
+/* Merge two sorted lists and return then new sorted list.
+ * Consumes the input lists.
+ * */
+node_t* ll_merge_sorted_list(node_t* list1, node_t* list2)
+{
+    node_t *curr1 = list1, *curr2 = list2,*new_list = NULL;
+    node_t *new_curr = NULL;
+
+    //printf("%s: START\n", __FUNCTION__);
+
+    while (curr1 && curr2) {
+        if (curr1->data <= curr2->data) {
+            if(!new_list) {
+                new_list = new_curr = curr1;
+            } else {
+                new_curr->next = curr1;
+                new_curr = curr1;
+            }
+            curr1 = curr1->next;
+        } else {
+            if(!new_list) {
+                new_list = new_curr = curr2;
+            } else {
+                new_curr->next = curr2;
+                new_curr = curr2;
+            }
+            curr2 = curr2->next;
+        }
+    }
+
+    if (curr1) {
+        if(!new_list) {
+            new_list = new_curr = curr1;
+        } else {
+            new_curr->next = curr1;
+            new_curr = curr1;
+        }
+    }
+
+    if (curr2) {
+        if(!new_list) {
+            new_list = new_curr = curr2;
+        } else {
+            new_curr->next = curr2;
+            new_curr = curr2;
+        }
+    }
+
+    return new_list;
+}
+
+node_t* ll_split_list(node_t *l)
+{
+	node_t *slow = l, *fast = l, *prev;
+
+	//printf("%s: START\n", __FUNCTION__);
+	while (fast && fast->next) {
+		prev = slow;
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+
+	if (prev) {
+		prev->next = NULL;
+	}
+
+	return slow;
+}
+
+node_t *ll_merge_sort(node_t *l)
+{
+	node_t *l1 = l, *l2;
+
+	//printf("%s: START\n", __FUNCTION__);
+
+	if (!l || !l->next){
+		return l;
+	}
+
+
+	l2 = ll_split_list(l);
+	l1 = ll_merge_sort(l1);
+	l2 = ll_merge_sort(l2);
+
+	return ll_merge_sorted_list(l1, l2);
+}
+
+/*************Union and intersection of two lists*****************/
+node_t* ll_clone_node(node_t *in_node, int clone_val, int clone_next)
+{
+	node_t *new_node = (node_t*)malloc(sizeof(node_t));
+	new_node->data = clone_val ? in_node->data : 0;
+	new_node->next = clone_next ? in_node->next : NULL;
+	return new_node;
+}
+
+node_t* ll_get_union(node_t *l1, node_t *l2)
+{
+	node_t *head = NULL, *curr = NULL;
+
+	l1 = ll_merge_sort(l1);
+	l2 = ll_merge_sort(l2);
+
+	ll_print(l1);
+	ll_print(l2);
+
+	while ( l1 && l2) {
+		if (l1->data == l2->data) {
+			if (head) {
+				curr->next = ll_clone_node(l1 , 1, 0);
+				curr = curr->next;
+			} else {
+				head = curr = ll_clone_node(l1, 1, 0);
+			}
+			l1 = l1->next;
+		} else if (l1->data < l2->data){
+			l1 = l1->next;
+		} else {
+			l2 = l2->next;
+		}
+	}
+
+	return head;
+}
+
+
+
+node_t* ll_get_intersection(node_t *l1, node_t *l2)
+{
+	node_t *head = NULL, *curr = NULL;
+
+	l1 = ll_merge_sort(l1);
+	l2 = ll_merge_sort(l2);
+
+	ll_print(l1);
+	ll_print(l2);
+
+	while ( l1 && l2) {
+		if ((l1->data == l2->data) || (l1->data < l2->data)) {
+			if (head) {
+				curr->next = ll_clone_node(l1, 1, 0);
+				curr = curr->next;
+			} else {
+				curr = head = ll_clone_node(l1, 1, 0);
+			}
+
+			if (l1->data == l2->data) {
+				l2 = l2->next;
+			}
+			l1 = l1->next;
+		} else {
+			if (head) {
+				curr->next = ll_clone_node(l2, 1, 0);
+				curr = curr->next;
+			} else {
+				curr = head = ll_clone_node(l2, 1, 0);
+			}
+			l2 = l2->next;
+		}
+	}
+
+
+	if (l1) {
+		while (l1) {
+			if (l1->data != curr->data) {
+				if (head) {
+					curr->next = ll_clone_node(l1, 1, 0);
+					curr = curr->next;
+				} else {
+					head = curr = ll_clone_node(l1, 1, 0);
+				}
+			}
+			l1 = l1->next;
+		}
+	} else {
+		while (l2) {
+			if (l2->data != curr->data) {
+				if (head) {
+					curr->next = ll_clone_node(l2, 1, 0);
+					curr = curr->next;
+				} else {
+					head = curr = ll_clone_node(l2, 1, 0);
+				}
+			}
+			l2 = l2->next;
+		}
+	}
+
+	return head;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

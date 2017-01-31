@@ -142,7 +142,7 @@ void test_ll_sorted_merge(void)
     ll_print(head1);
     ll_print(head2);
 
-    head1 = ll_sorted_merge(head2, head1);
+    head1 = ll_merge_sorted_list(head2, head1);
 
     ll_print(head1);
     ll_free(&head1);
@@ -356,6 +356,55 @@ void test_reverse_kll(void)
 	ll_free(&list1);
 }
 
+void test_merge_sort_lists()
+{
+    int n1 = 8;
+	int arr1[8] = {8,5,6,1,3,2,4,7};
+	node_t *list1;
+
+	if (ll_create(&list1, n1, arr1) == LL_FALSE) {
+		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	ll_print(list1);
+	list1 = ll_merge_sort(list1);
+	ll_print(list1);
+
+	ll_free(&list1);
+	return;
+}
+
+void test_union_intersection(void)
+{
+    int n1 = 5, n2 = 5;
+	int arr1[5] = {1,2,3,4,5};
+	int arr2[5] = {2,5,6,6,8};
+	node_t *l1, *l2, *nl;
+
+	if (ll_create(&l1, n1, arr1) == LL_FALSE) {
+		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	if (ll_create(&l2, n2, arr2) == LL_FALSE) {
+		printf("%s: list 2 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	nl = ll_get_union(l1, l2);
+	ll_print(nl);
+	ll_free(&nl);
+
+	nl = ll_get_intersection(l1, l2);
+	ll_print(nl);
+	ll_free(&nl);
+
+
+	ll_free(&l1);
+	ll_free(&l2);
+}
+
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
@@ -367,9 +416,11 @@ int main(void) {
 	//test_middle();
 	//test_ll_palindrome();
 	//test_ll_intersection();
-	test_generic();
+	//test_generic();
 	//test_alt_split_list();
 	//test_reverse_kll();
+	test_merge_sort_lists();
+	//test_union_intersection();
 	printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

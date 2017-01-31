@@ -30,7 +30,7 @@ node_t* ll_find_nth_from_last_node(node_t *head, int n);
 int ll_swap_nodes(node_t **head, int data1, int data2);
 node_t* ll_merge(node_t* list1, node_t* list2);
 node_t* ll_reverse(node_t* head);
-node_t* ll_sorted_merge(node_t* list1, node_t* list2);
+node_t* ll_merge_sorted_list(node_t* list1, node_t* list2);
 node_t* ll_sorted_insert_value(node_t* head, int data);
 node_t* ll_get_middle_node(node_t* head, int *even);
 int ll_is_palidrome(node_t* head);
@@ -46,6 +46,10 @@ node_t* ll_segregate_even_odd(node_t* head);
 int ll_detect_and_remove_loop(node_t *head);
 node_t* ll_add_lists(node_t *l1, node_t* l2);
 void ll_delete_node_seemless(node_t *l , node_t* del_node);
+node_t *ll_merge_sort(node_t *l);
+node_t* ll_get_union(node_t *l1, node_t *l2);
+node_t* ll_get_intersection(node_t *l1, node_t *l2);
+
 #endif // _LINKED_LIST_H_
 
 
