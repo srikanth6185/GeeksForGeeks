@@ -405,6 +405,32 @@ void test_union_intersection(void)
 	ll_free(&l2);
 }
 
+void test_add_2_lists(void)
+{
+    int n1 = 6, n2 = 5;
+	int arr1[6] = {1,2,3,4,5,7};
+	int arr2[5] = {2,5,6,6,8};
+	node_t *l1, *l2, *nl;
+
+	if (ll_create(&l1, n1, arr1) == LL_FALSE) {
+		printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	if (ll_create(&l2, n2, arr2) == LL_FALSE) {
+		printf("%s: list 2 create failure!!!\n", __FUNCTION__);
+		return;
+	}
+
+	nl = ll_add_lists_MSBfirst(l2, l1);
+	ll_print(nl);
+	ll_free(&nl);
+
+	ll_free(&l1);
+	ll_free(&l2);
+}
+
+
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll();
@@ -419,8 +445,9 @@ int main(void) {
 	//test_generic();
 	//test_alt_split_list();
 	//test_reverse_kll();
-	test_merge_sort_lists();
+	//test_merge_sort_lists();
 	//test_union_intersection();
+	test_add_2_lists();
 	printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

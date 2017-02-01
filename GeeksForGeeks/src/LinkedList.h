@@ -49,6 +49,7 @@ void ll_delete_node_seemless(node_t *l , node_t* del_node);
 node_t *ll_merge_sort(node_t *l);
 node_t* ll_get_union(node_t *l1, node_t *l2);
 node_t* ll_get_intersection(node_t *l1, node_t *l2);
+node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2);
 
 #endif // _LINKED_LIST_H_
 

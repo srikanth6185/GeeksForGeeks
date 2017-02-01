@@ -1061,7 +1061,7 @@ void ll_add_carry_to_remaining_list(node_t* l, node_t *stop_node, node_t** resul
 node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2)
 {
 	int c1, c2, diff, carry = 0;
-	node_t *result, curr;
+	node_t *result, *curr;
 
 	c1 = ll_get_count(l1);
 	c2 = ll_get_count(l2);
@@ -1075,13 +1075,14 @@ node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2)
 	} else {
 		if (c2 > c1) {
 			diff = c2 - c1;
-			ll_swap_ptr(l1, l2);
+			ll_swap_ptr((void**)&l1, (void**)&l2);
 		} else {
 			diff = c1 - c2;
 		}
 		curr = l1;
 		while (diff) {
 			curr = curr->next;
+			diff--;
 		}
 
 		result = ll_add_same_size_lists(curr, l2, &carry);
@@ -1089,7 +1090,7 @@ node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2)
 	}
 
 	if (carry) {
-		node_t nn = ll_create_node(carry);
+		node_t *nn = ll_create_node(carry);
 		nn->next = result;
 		result = nn;
 	}
