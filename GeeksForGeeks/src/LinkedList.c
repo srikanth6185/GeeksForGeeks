@@ -1021,6 +1021,14 @@ node_t* ll_get_intersection(node_t *l1, node_t *l2)
 	return head;
 }
 /*********Add 2 lists without modifying the original lists********/
+void ll_swap_ptr(void **p1, void **p2)
+{
+	void *temp = *p1;
+	*p1 = *p2;
+	*p2 = temp;
+	return;
+}
+
 node_t* ll_add_same_size_lists(node_t *l1, node_t *l2, int *carry)
 {
 	node_t *result = NULL;
@@ -1052,8 +1060,42 @@ void ll_add_carry_to_remaining_list(node_t* l, node_t *stop_node, node_t** resul
 /*Lists are MSB to LSB and we cannot modify the original list.*/
 node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2)
 {
+	int c1, c2, diff, carry = 0;
+	node_t *result, curr;
 
-	return NULL;
+	c1 = ll_get_count(l1);
+	c2 = ll_get_count(l2);
+
+	if (!c1 && !c2) {
+		return NULL;
+	}
+
+	if (c1 == c2) {
+		result = ll_add_same_size_lists(l1, l2, &carry);
+	} else {
+		if (c2 > c1) {
+			diff = c2 - c1;
+			ll_swap_ptr(l1, l2);
+		} else {
+			diff = c1 - c2;
+		}
+		curr = l1;
+		while (diff) {
+			curr = curr->next;
+		}
+
+		result = ll_add_same_size_lists(curr, l2, &carry);
+		ll_add_carry_to_remaining_list(l1, curr, &result, &carry);
+	}
+
+	if (carry) {
+		node_t nn = ll_create_node(carry);
+		nn->next = result;
+		result = nn;
+	}
+
+
+	return result;
 }
 
 
