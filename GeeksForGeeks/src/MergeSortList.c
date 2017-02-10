@@ -14,26 +14,26 @@
  * */
 void split_list(node_t *a, node_t **b)
 {
-	node_t *slow = a, *fast = a;
-	*b = NULL;
+    node_t *slow = a, *fast = a;
+    *b = NULL;
 
-	if (!slow || !slow->next) {
-		return;
-	}
+    if (!slow || !slow->next) {
+        return;
+    }
 
-	while(fast && fast->next) {
-		fast = fast->next;
-		if (fast->next) {
-			fast = fast->next;
-		} else {
-			break;
-		}
-		slow = slow->next;
-	}
+    while(fast && fast->next) {
+        fast = fast->next;
+        if (fast->next) {
+            fast = fast->next;
+        } else {
+            break;
+        }
+        slow = slow->next;
+    }
 
-	*b = slow->next;
-	slow->next = NULL;
-	return;
+    *b = slow->next;
+    slow->next = NULL;
+    return;
 }
 
 /**
@@ -41,19 +41,19 @@ void split_list(node_t *a, node_t **b)
  */
 node_t* merge_sorted_list_rec(node_t* a, node_t* b)
 {
-	if(!a) {
-		return b;
-	} else if (!b) {
-		return a;
-	}
+    if(!a) {
+        return b;
+    } else if (!b) {
+        return a;
+    }
 
-	if (a->data <= b->data) {
-		a->next = merge_sorted_list_rec(a->next, b);
-		return a;
-	} else {
-		b->next = merge_sorted_list_rec(a, b->next);
-		return b;
-	}
+    if (a->data <= b->data) {
+        a->next = merge_sorted_list_rec(a->next, b);
+        return a;
+    } else {
+        b->next = merge_sorted_list_rec(a, b->next);
+        return b;
+    }
 }
 
 /**
@@ -61,41 +61,41 @@ node_t* merge_sorted_list_rec(node_t* a, node_t* b)
  */
 node_t* merge_sort_rec(node_t *head, rec_debug_t *dbg)
 {
-	node_t *a, *b;
+    node_t *a, *b;
 
-	dbg->rec_call_cnt++;
+    dbg->rec_call_cnt++;
 
-	if (!head || !head->next) {
-		return head;
-	}
+    if (!head || !head->next) {
+        return head;
+    }
 
-	a = head;
-	split_list(a, &b);
+    a = head;
+    split_list(a, &b);
 
-	a = merge_sort_rec(a, dbg);
-	b = merge_sort_rec(b, dbg);
+    a = merge_sort_rec(a, dbg);
+    b = merge_sort_rec(b, dbg);
 
-	return merge_sorted_list_rec(a,b);
+    return merge_sorted_list_rec(a,b);
 }
 
 
 void test_ll_merge_sort(void)
 {
-	int arr[6] = {5,4,3,1,2,6};
-	node_t *head;
-	rec_debug_t dbg;
+    int arr[6] = {5,4,3,1,2,6};
+    node_t *head;
+    rec_debug_t dbg;
 
-	printf("%s: START\n", __FUNCTION__);
+    printf("%s: START\n", __FUNCTION__);
 
-	ll_create(&head, 6, arr);
-	ll_print(head);
+    ll_create(&head, 6, arr);
+    ll_print(head);
 
-	head = merge_sort_rec(head, &dbg);
+    head = merge_sort_rec(head, &dbg);
 
-	printf("%s: Sorted list\n", __FUNCTION__);
-	ll_print(head);
-	ll_free(&head);
-	return;
+    printf("%s: Sorted list\n", __FUNCTION__);
+    ll_print(head);
+    ll_free(&head);
+    return;
 }
 
 
