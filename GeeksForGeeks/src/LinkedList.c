@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "LinkedList.h"
 
 /*Create linked list with n nodes.*/
@@ -760,6 +761,7 @@ node_t* ll_create_node(int val)
     printf("%s\n", __FUNCTION__);
     new_node->data = val;
     new_node->next = NULL;
+    new_node->rnd = NULL;
     return new_node;
 }
 
@@ -924,6 +926,7 @@ node_t* ll_clone_node(node_t *in_node, int clone_val, int clone_next)
     node_t *new_node = (node_t*)malloc(sizeof(node_t));
     new_node->data = clone_val ? in_node->data : 0;
     new_node->next = clone_next ? in_node->next : NULL;
+    new_node->rnd = NULL;
     return new_node;
 }
 
@@ -1177,31 +1180,107 @@ node_t *ll_qsort(node_t *l)
 
 node_t* ll_alternate_merge(node_t *l1, node_t* l2)
 {
-	node_t *curr = l1, *tmp;
+    node_t *curr = l1, *tmp;
 
-	if (!l1 || !l2) {
-		return l2;
-	}
+    if (!l1 || !l2) {
+        return l2;
+    }
 
-	while (curr) {
-		if (l2) {
-			tmp = l2->next;
-			l2->next = curr->next;
-			curr->next = l2;
+    while (curr) {
+        if (l2) {
+            tmp = l2->next;
+            l2->next = curr->next;
+            curr->next = l2;
 
-			curr = l2->next;
-			l2 = tmp;
-			continue;
-		}
-		break;
-	}
+            curr = l2->next;
+            l2 = tmp;
+            continue;
+        }
+        break;
+    }
 
-	return l2;
+    return l2;
 }
 
 
 
+/****************Clone list with rand pointers*************************/
+//The input list has next ptrs and random pointers. O(n) method
+//http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/
 
+void ll_print_rnd(node_t *l)
+{
+    while(l) {
+        printf("(%d, %d)->", l->data, l->rnd ? l->rnd->data : 0);
+        l = l->next;
+    }
+    printf("NULL\n");
+}
+
+
+node_t* ll_clone_list_with_rnd_links(node_t* l)
+{
+    node_t *curr1 = l, *curr2, *hd = NULL, *tmp;
+
+    if (!l) {
+        return NULL;
+    }
+
+    // Clone the nodes of input list and insert them in the input
+    // list next to the primary nodes.
+    while (curr1) {
+        tmp = curr1->next;
+        curr1->next = ll_create_node(curr1->data);
+        curr1->next->next = tmp;
+        curr1->next->rnd = curr1->rnd;
+        curr1 = tmp;
+    }
+
+
+    // Reset the pntrs
+    curr1 = l;
+    while (curr1) {
+        curr1->next->rnd = curr1->rnd->next;
+        curr1 = curr1->next->next;
+    }
+
+    //unlink new list from original.
+    curr1 = l;
+    while (curr1) {
+        tmp = curr1->next->next;
+        if (hd) {
+            curr2->next = curr1->next;
+            curr2 = curr2->next;
+        } else {
+            hd = curr2 = curr1->next;
+        }
+        curr1->next = tmp;
+        curr1 = tmp;
+    }
+
+    return hd;
+}
+
+node_t *ll_get_random(node_t* head)
+{
+    int i, j;
+    node_t *result = head;
+
+    printf("%s: START\n", __FUNCTION__);
+    if (!head) {
+        return result;
+    }
+
+    srand(time(NULL));
+    for(i = 1; head; i++) {
+        j = rand() % (i + 1);
+        if (j == 0) {
+            result = head;
+        }
+        head = head->next;
+    }
+    return result;
+}
 
 
 

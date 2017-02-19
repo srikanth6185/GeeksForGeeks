@@ -453,6 +453,35 @@ void test_qsort(void)
     ll_free(&l);
 }
 
+void test_list_clone_with_rnd_ptrs(void)
+{
+    int n = 5;
+    int arr[5] = {1,2,3,4,5};
+    node_t *l, *nl, *rn;
+
+    if (ll_create(&l, n, arr) == LL_FALSE) {
+        printf("%s: list 1 create failure!!!\n", __FUNCTION__);
+        return;
+    }
+    l->rnd = l->next->next;
+    l->next->rnd = l;
+    l->next->next->rnd = l->next->next->next->next;
+    l->next->next->next->rnd = l->next->next;
+    l->next->next->next->next->rnd = l->next;
+    ll_print_rnd(l);
+
+    nl = ll_clone_list_with_rnd_links(l);
+    ll_print_rnd(nl);
+    ll_print_rnd(l);
+
+    rn = ll_get_random(l);
+    if (rn) {
+        printf("Value:%d\n", rn->data);
+    }
+
+    ll_free(&l);
+    ll_free(&nl);
+}
 
 /*Main program to test all the problems.*/
 int main(void) {
@@ -465,13 +494,14 @@ int main(void) {
     //test_middle();
     //test_ll_palindrome();
     //test_ll_intersection();
-    test_generic();
+    //test_generic();
     //test_alt_split_list();
     //test_reverse_kll();
     //test_merge_sort_lists();
     //test_union_intersection();
     //test_add_2_lists();
     //test_qsort();
-    printf("ALL TESTS COMPLETE!!!\n");
+	test_list_clone_with_rnd_ptrs();
+	printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

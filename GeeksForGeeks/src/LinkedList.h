@@ -12,6 +12,7 @@ typedef struct rec_debug_s {
 typedef struct node_s {
     int data;
     struct node_s *next;
+    struct node_s *rnd;
 } node_t;
 
 
@@ -52,7 +53,9 @@ node_t* ll_get_intersection(node_t *l1, node_t *l2);
 node_t* ll_add_lists_MSBfirst(node_t *l1, node_t *l2);
 node_t *ll_qsort(node_t *l);
 node_t* ll_alternate_merge(node_t *l1, node_t* l2);
-
+node_t *ll_clone_list_with_rnd_links(node_t *l);
+void ll_print_rnd(node_t *l);
+node_t *ll_get_random(node_t* head);
 #endif // _LINKED_LIST_H_
 
 
