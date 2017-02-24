@@ -33,7 +33,7 @@ node_t* ll_merge(node_t* list1, node_t* list2);
 node_t* ll_reverse(node_t* head);
 node_t* ll_merge_sorted_list(node_t* list1, node_t* list2);
 node_t* ll_sorted_insert_value(node_t* head, int data);
-node_t* ll_get_middle_node(node_t* head, int *even);
+
 int ll_is_palidrome(node_t* head);
 node_t* ll_get_intersect_node(node_t* list1, node_t* list2);
 void ll_remove_duplicates(node_t *head);
@@ -56,6 +56,9 @@ node_t* ll_alternate_merge(node_t *l1, node_t* l2);
 node_t *ll_clone_list_with_rnd_links(node_t *l);
 void ll_print_rnd(node_t *l);
 node_t *ll_get_random(node_t* head);
+node_t* ll_co_locate_even_odd(node_t* head);
+node_t* ll_get_middle_node(node_t* head, int *even);
+void ll_update_rnd_to_highest_on_right(node_t *hd);
 #endif // _LINKED_LIST_H_
 
 

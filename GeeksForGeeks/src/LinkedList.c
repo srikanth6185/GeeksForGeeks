@@ -1282,6 +1282,71 @@ node_t *ll_get_random(node_t* head)
     return result;
 }
 
+node_t* ll_co_locate_even_odd(node_t* head)
+{
+    node_t *oh, *ocurr, *eh, *ecurr;
+    int cnt = 1;
+
+
+    if (!head || !head->next) {
+        return NULL;
+    }
+
+    oh = ocurr = head;
+    eh = ecurr = head->next;
+
+    head = head->next->next;
+
+    while (head) {
+        node_t *temp = head->next;
+
+        if(cnt%2) {
+            ocurr->next = head;
+            ocurr = ocurr->next;
+        } else {
+            ecurr->next = head;
+            ecurr = ecurr->next;
+            ecurr->next = NULL;
+        }
+
+        head = temp;
+        cnt++;
+    }
+
+    ocurr->next = eh;
+    return oh;
+}
+
+
+/***************************
+Update the rnd pointer to
+highest value on the right
+***************************/
+void ll_update_rnd_to_highest_on_right(node_t *hd)
+{
+    node_t *max, *curr;
+
+
+    hd = ll_reverse(hd);
+    max = hd;
+    curr = hd;
+    printf("%s: Reversed starting max calc\n", __FUNCTION__);
+    while (curr) {
+        curr->rnd = max;
+        if (curr->data > max->data) {
+            max = curr;
+        }
+        curr = curr->next;
+    }
+    printf("%s: max calc\n", __FUNCTION__);
+    hd = ll_reverse(hd);
+    return;
+}
+
+
+
+
+
 
 
 
