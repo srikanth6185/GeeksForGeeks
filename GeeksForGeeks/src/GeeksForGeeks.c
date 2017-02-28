@@ -541,10 +541,33 @@ void test_q_all(void)
 	test_q_basic();
 }
 
+void test_bt_print_level(void)
+{
+	bt_node_t *root = NULL;
+	int arr[6] = {5,3,6,1,4,2};
+	int i;
+
+	for (i = 0; i < 6; i++) {
+		bt_insert(&root, arr[i]);
+	}
+
+	bt_print_level(root);
+
+	bt_destroy(&root);
+	return;
+}
+
+void test_bt_all(void)
+{
+	test_bt_print_level();
+}
+
+
 /*Main program to test all the problems.*/
 int main(void) {
 	//test_ll_all();
-	test_q_all();
+	//test_q_all();
+	test_bt_all();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

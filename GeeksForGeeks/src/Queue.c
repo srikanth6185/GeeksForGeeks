@@ -35,7 +35,7 @@ void q_destroy(q_t *q)
 
 int en_q(q_t* q, void* data)
 {
-	if (q) {
+	if (q && data) {
 		q_node_t *new_q_node = (q_node_t*)malloc(sizeof(q_node_t));
 
 		if (!new_q_node) {

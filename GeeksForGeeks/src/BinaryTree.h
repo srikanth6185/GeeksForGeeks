@@ -3,42 +3,15 @@
 
 typedef struct bt_node_s {
 	int val;
-	struct bt_node_t *right;
-	struct bt_node_t *left;
+	struct bt_node_s *right;
+	struct bt_node_s *left;
 } bt_node_t;
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void bt_insert(bt_node_t **root, int val);
+void bt_destroy(bt_node_t **root);
+void bt_print_level(bt_node_t *root);
 
 #endif  //_BINARY_TREE_H_
