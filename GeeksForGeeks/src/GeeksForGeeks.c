@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "vector_util.h"
+#include "BinaryTree.h"
+#include "Queue.h"
+
 
 void test_ll(void)
 {
@@ -489,8 +492,8 @@ void test_list_clone_with_rnd_ptrs(void)
     ll_free(&l);
 }
 
-/*Main program to test all the problems.*/
-int main(void) {
+void test_ll_all(void)
+{
     //test_ll();
     //test_ll_mergesort();
     //test_ll_sorted_merge();
@@ -507,8 +510,41 @@ int main(void) {
     //test_union_intersection();
     //test_add_2_lists();
     //test_qsort();
+    //test_list_clone_with_rnd_ptrs();
+}
 
-    test_list_clone_with_rnd_ptrs();
+void test_q_basic(void)
+{
+	q_t* q;
+	int arr[10] = {1,2,3,4,5,6,7,8,9,10}, i;
+	q = q_create();
+
+	for (i = 0; i < 10; i++) {
+		en_q(q, &arr[i]);
+	}
+
+	for(;!is_q_empty(q);) {
+		int *val;
+		de_q(q, (void**)&val);
+		if (val) {
+			printf("%d\n", *val);
+		} else {
+			printf("ERROR\n");
+			break;
+		}
+	}
+	q_destroy(q);
+	return;
+}
+void test_q_all(void)
+{
+	test_q_basic();
+}
+
+/*Main program to test all the problems.*/
+int main(void) {
+	//test_ll_all();
+	test_q_all();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }
