@@ -515,59 +515,62 @@ void test_ll_all(void)
 
 void test_q_basic(void)
 {
-	q_t* q;
-	int arr[10] = {1,2,3,4,5,6,7,8,9,10}, i;
-	q = q_create();
+    q_t* q;
+    int arr[10] = {1,2,3,4,5,6,7,8,9,10}, i;
+    q = q_create();
 
-	for (i = 0; i < 10; i++) {
-		en_q(q, &arr[i]);
-	}
+    for (i = 0; i < 10; i++) {
+        en_q(q, &arr[i]);
+    }
 
-	for(;!is_q_empty(q);) {
-		int *val;
-		de_q(q, (void**)&val);
-		if (val) {
-			printf("%d\n", *val);
-		} else {
-			printf("ERROR\n");
-			break;
-		}
-	}
-	q_destroy(q);
-	return;
+    for(;!is_q_empty(q);) {
+        int *val;
+        de_q(q, (void**)&val);
+        if (val) {
+            printf("%d\n", *val);
+        } else {
+            printf("ERROR\n");
+            break;
+        }
+    }
+    q_destroy(q);
+    return;
 }
 void test_q_all(void)
 {
-	test_q_basic();
+    test_q_basic();
 }
 
-void test_bt_print_level(void)
+void test_bt_print(void)
 {
-	bt_node_t *root = NULL;
-	int arr[6] = {5,3,6,1,4,2};
-	int i;
+    bt_node_t *root = NULL;
+    int arr[6] = {5,3,6,1,4,2};
+    int i;
 
-	for (i = 0; i < 6; i++) {
-		bt_insert(&root, arr[i]);
-	}
+    for (i = 0; i < 6; i++) {
+        bt_insert(&root, arr[i]);
+    }
 
-	bt_print_level(root);
+    //bt_print_level(root);
+    //bt_print_inorder_no_rec_st(root);
+    bt_print_inorder_morris_traversal(root);
+    printf(" Size of Tree: %d\n", bt_get_size(root));
 
-	bt_destroy(&root);
-	return;
+    bt_destroy(&root);
+    return;
 }
 
 void test_bt_all(void)
 {
-	test_bt_print_level();
+    test_bt_print();
 }
 
 
 /*Main program to test all the problems.*/
 int main(void) {
-	//test_ll_all();
-	//test_q_all();
-	test_bt_all();
+    //test_ll_all();
+    //test_q_all();
+    test_bt_all();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }
