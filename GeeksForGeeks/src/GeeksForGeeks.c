@@ -560,9 +560,46 @@ void test_bt_print(void)
     return;
 }
 
+void test_identical_bt(void)
+{
+    bt_node_t *root = NULL, *root1 = NULL;
+    int arr[6] = {5,3,6,1,4,2};
+    int i;
+
+    for (i = 0; i < 6; i++) {
+        bt_insert(&root, arr[i]);
+    }
+
+    for (i = 0; i < 6; i++) {
+        bt_insert(&root1, arr[i]);
+    }
+
+
+    i = is_bts_identical(root, root);
+    printf("The trees are %s \n", i ? "identical" : "non-identical");
+
+
+    i = is_bts_identical(root, root1);
+    printf("The trees are %s \n", i ? "identical" : "non-identical");
+
+    bt_insert(&root1, 7);
+    i = is_bts_identical(root, root1);
+    printf("The trees are %s \n", i ? "identical" : "non-identical");
+
+    bt_insert(&root1, 8);
+    bt_insert(&root1, 9);
+    bt_insert(&root1, 10);
+
+    printf("r1 hgt: %d and r2 hgt: %d\n", bt_get_height(root), bt_get_height(root1));
+    bt_destroy(&root);
+    bt_destroy(&root1);
+    return;
+}
+
 void test_bt_all(void)
 {
     test_bt_print();
+    test_identical_bt();
 }
 
 

@@ -39,17 +39,15 @@ void bt_insert(bt_node_t **root, int val)
 
 static void _bt_destroy(bt_node_t *root)
 {
-    if (root) {
-        if (root->left) {
-            _bt_destroy(root->left);
-        }
-        if (root->right) {
-            _bt_destroy(root->right);
-        }
-        free(root);
-    } else {
-        return;
-    }
+	if (!root) {
+		return;
+	}
+
+	_bt_destroy(root->left);
+	_bt_destroy(root->right);
+	free(root);
+
+	return;
 }
 
 void bt_destroy(bt_node_t **root)
@@ -165,6 +163,31 @@ int bt_get_size(bt_node_t *root)
     }
 }
 
+int bt_get_height(bt_node_t* root)
+{
+	if (!root) {
+		return 0;
+	} else {
+		int dLeft = bt_get_height(root->left);
+		int dRight = bt_get_height(root->right);
+
+		return (1 + ((dLeft > dRight) ? dLeft : dRight));
+	}
+}
+/*Detect if two given trees are identical*/
+int is_bts_identical(bt_node_t *rA, bt_node_t *rB)
+{
+	if (!rA && !rB) {
+		return 1;
+	}
+
+	if (rA && rB) {
+		return ((rA->val == rB->val) &&
+				is_bts_identical(rA->left, rB->left) &&
+				is_bts_identical(rA->right, rB->right));
+	}
+	return 0;
+}
 
 
 

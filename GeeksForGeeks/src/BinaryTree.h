@@ -16,4 +16,7 @@ void bt_print_level(bt_node_t *root);
 void bt_print_inorder_no_rec_st(bt_node_t *root);
 void bt_print_inorder_morris_traversal(bt_node_t* root);
 int bt_get_size(bt_node_t *root);
+int is_bts_identical(bt_node_t *rA, bt_node_t *rB);
+int bt_get_height(bt_node_t* root);
+
 #endif  //_BINARY_TREE_H_
