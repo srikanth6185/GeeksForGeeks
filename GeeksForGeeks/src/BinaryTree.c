@@ -189,7 +189,51 @@ int is_bts_identical(bt_node_t *rA, bt_node_t *rB)
 	return 0;
 }
 
+bt_node_t* concatenateCL(bt_node_t *l1, bt_node_t *l2)
+{
+	bt_node_t *l1Last ,*l2Last;
 
+	if (!l1 || !l2) {
+		return l1 ? l1:l2;
+	}
+
+	l1Last = l1->left;
+	l2Last = l2->left;
+
+	/* L1 beginning to
+	 * L2 end and vice-versa*/
+	l1->left = l2Last;
+	l2Last->right = l1;
+
+
+	/* L1 end to
+	 * L2 beginning and vice-versa.*/
+	l1Last->right = l2;
+	l2->left = l1Last;
+
+	return l1;
+}
+
+bt_node_t* btToList(bt_node_t *root)
+{
+	bt_node_t *leftList, *rightList;
+
+	if (!root) {
+		return NULL;
+	}
+
+	if(!root->left && !root->right) {
+		root->left = root->right = root;
+		return root;
+	}
+
+	leftList = btToList(root->left);
+	rightList = btToList(root->right);
+
+	root->left = root->right = root;
+
+	return concatenateCL(concatenateCL(leftList, root), rightList);
+}
 
 
 

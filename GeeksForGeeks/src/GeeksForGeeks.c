@@ -596,10 +596,38 @@ void test_identical_bt(void)
     return;
 }
 
+void test_bt_to_List(void)
+{
+    bt_node_t *root = NULL, *sentinel;
+    int arr[6] = {5,3,6,1,4,2};
+    int i;
+
+    for (i = 0; i < 6; i++) {
+        bt_insert(&root, arr[i]);
+    }
+
+    bt_print_level(root);
+
+    printf("\n");
+    sentinel = root = btToList(root);
+    while (sentinel) {
+    	bt_node_t *temp = sentinel;
+    	printf("%d \n", sentinel->val);
+    	sentinel = sentinel->right;
+    	free(temp);
+    	if (sentinel == root) {
+    		break;
+    	}
+    }
+
+    return;
+}
+
 void test_bt_all(void)
 {
-    test_bt_print();
-    test_identical_bt();
+    //test_bt_print();
+    //test_identical_bt();
+    test_bt_to_List();
 }
 
 
