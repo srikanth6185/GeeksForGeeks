@@ -235,9 +235,34 @@ bt_node_t* btToList(bt_node_t *root)
 	return concatenateCL(concatenateCL(leftList, root), rightList);
 }
 
+/* Convert a given tree to SUM tree by changing the values of
+ * node data.*/
+bt_node_t* convertTreeToSumTree(bt_node_t *root)
+{
+	return NULL;
+}
 
+int getDiameterOfTree(bt_node_t *root, int* max)
+{
+	int leftHgt, rightHgt;
 
+	if(!root) {
+		return 0;
+	}
 
+	if (!root->left && !root->right) {
+		return 1;
+	}
+
+	leftHgt = getDiameterOfTree(root->left, max);
+	rightHgt = getDiameterOfTree(root->right, max);
+
+	if (*max < (leftHgt + rightHgt + 1)) {
+		*max = leftHgt + rightHgt + 1;
+	}
+
+	return (leftHgt > rightHgt) ? (leftHgt + 1) : (rightHgt + 1) ;
+}
 
 
 
