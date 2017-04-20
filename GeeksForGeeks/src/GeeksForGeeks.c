@@ -623,11 +623,47 @@ void test_bt_to_List(void)
     return;
 }
 
+void test_bt_constructTree(void)
+{
+	int in[10] = {1,2,3,4,5,6};
+	int pre[10] = {4,2,1,3,6,5};
+	int po[10] = {1,3,2,5,6,4};
+
+	int idx = 0;
+	bt_node_t *root;
+
+	root = buildTreeInAndPre(in, pre, 0, 5, &idx);
+	if (root) {
+		printf("Building tree with inorder and preorder arr done\n");
+		bt_print_inorder_morris_traversal(root);
+	} else {
+		printf("Returned NULL\n");
+		return;
+	}
+
+	bt_destroy(&root);
+    printf("----------------------------------------------\n");
+	idx = 5;
+	root = buildTreeInAndPost(in, po, 0, 5, &idx);
+	if (root) {
+		printf("Building tree with inorder and postorder arr done\n");
+		bt_print_inorder_morris_traversal(root);
+	} else {
+		printf("Returned NULL\n");
+		return;
+	}
+
+	bt_destroy(&root);
+
+	return;
+}
+
 void test_bt_all(void)
 {
     //test_bt_print();
     //test_identical_bt();
-    test_bt_to_List();
+    //test_bt_to_List();
+	test_bt_constructTree();
 }
 
 

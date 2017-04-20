@@ -151,6 +151,7 @@ void bt_print_inorder_morris_traversal(bt_node_t* root)
             }
         }
     }
+    printf("\n");
     return;
 }
 
@@ -235,7 +236,104 @@ bt_node_t* btToList(bt_node_t *root)
 	return concatenateCL(concatenateCL(leftList, root), rightList);
 }
 
+int searchInOrderTable(int *in, int s, int e, int value)
+{
+	int i;
+	if (!in || (s < 0) || (e < 0)) {
+		printf("Input wrong\n");
+		return -1;
+	}
 
+	for(i = s; i <= e; i++) {
+		if (in[i] == value) {
+			return i;
+		}
+	}
+	return -1;
+}
+/* Construct tree from In-order + pre-order/post-order traversals
+ * We need in-order + one of the remaining traversals to fully contruct*/
+bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx)
+{
+	int iIdx;
+	bt_node_t *newNode;
+
+	//printf("%s: start:%d end:%d  preIdx:%d\n", __FUNCTION__, start, end, preIdx ? *preIdx: -1);
+	if (!in || !pre || !preIdx || (start < 0) || (end < 0) || (start > end)) {
+		return NULL;
+	}
+
+	newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+	if(!newNode) {
+		printf("Memory alloc failed\n");
+		return NULL;
+	}
+	newNode->val = pre[*preIdx];
+	*preIdx = *preIdx + 1;
+
+	if (start == end) {
+		newNode->left = NULL;
+		newNode->right = NULL;
+		return newNode;
+	}
+
+	iIdx = searchInOrderTable(in, start, end, newNode->val);
+	if (iIdx < 0) {
+		printf("%d not found in InOrderTraversal\n", newNode->val);
+		return NULL;
+	}
+
+	//printf("%s\n", "LEFT");
+	newNode->left = buildTreeInAndPre(in, pre, start, iIdx - 1, preIdx);
+
+	//printf("%s\n", "RIGHT");
+	newNode->right = buildTreeInAndPre(in, pre, iIdx + 1, end, preIdx);
+
+	return newNode;
+}
+
+
+bt_node_t* buildTreeInAndPost(int *in, int *po, int start, int end, int *poIdx)
+{
+	int iIdx;
+	bt_node_t *newNode;
+
+
+	//printf("%s: start:%d end:%d  poIdx:%d po[poIdx]:%d \n", __FUNCTION__, start, end, poIdx ? *poIdx: -1, po[*poIdx]);
+	if (!in || !po || !poIdx || (start < 0) || (end < 0) || (start > end)) {
+		return NULL;
+	}
+
+	newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+	if(!newNode) {
+		printf("Memory alloc failed\n");
+		return NULL;
+	}
+	newNode->val = po[*poIdx];
+	*poIdx = *poIdx - 1;
+
+	if (start == end) {
+		newNode->left = NULL;
+		newNode->right = NULL;
+		return newNode;
+	}
+
+	iIdx = searchInOrderTable(in, start, end, newNode->val);
+	if (iIdx < 0) {
+		//printf("%d not found in InOrderTraversal\n", newNode->val);
+		return NULL;
+	} else {
+		//printf("Found %d at %d in in\n", newNode->val, iIdx);
+	}
+
+	//printf("%s\n", "RIGHT");
+	newNode->right = buildTreeInAndPost(in, po, iIdx + 1, end, poIdx);
+
+	//printf("%s\n", "LEFT");
+	newNode->left = buildTreeInAndPost(in, po, start, iIdx - 1, poIdx);
+
+	return newNode;
+}
 
 
 

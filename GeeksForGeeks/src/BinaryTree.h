@@ -19,5 +19,6 @@ int bt_get_size(bt_node_t *root);
 int is_bts_identical(bt_node_t *rA, bt_node_t *rB);
 int bt_get_height(bt_node_t* root);
 bt_node_t* btToList(bt_node_t *root);
-
+bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx);
+bt_node_t* buildTreeInAndPost(int *in, int *pre, int start, int end, int *poIdx);
 #endif  //_BINARY_TREE_H_
