@@ -21,4 +21,5 @@ int bt_get_height(bt_node_t* root);
 bt_node_t* btToList(bt_node_t *root);
 bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx);
 bt_node_t* buildTreeInAndPost(int *in, int *pre, int start, int end, int *poIdx);
+int getDiameterOfTree(bt_node_t *root, int* max);
 #endif  //_BINARY_TREE_H_

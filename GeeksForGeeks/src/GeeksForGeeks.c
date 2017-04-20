@@ -623,6 +623,7 @@ void test_bt_to_List(void)
     return;
 }
 
+
 void test_bt_constructTree(void)
 {
 	int in[10] = {1,2,3,4,5,6};
@@ -658,12 +659,31 @@ void test_bt_constructTree(void)
 	return;
 }
 
+
+void test_bt_diameter(void)
+{
+    bt_node_t *root = NULL;
+    int arr[10] = {6, 1, 2, 3, 4, 5, -1, -2, 7, 8};
+    int i, dia = 0;
+
+    for (i = 0; i < 10; i++) {
+        bt_insert(&root, arr[i]);
+    }
+
+    bt_print_level(root);
+
+    getDiameterOfTree(root, &dia);
+    printf("Diameter: %d\n", dia);
+    bt_destroy(&root);
+}
+
 void test_bt_all(void)
 {
     //test_bt_print();
     //test_identical_bt();
     //test_bt_to_List();
 	test_bt_constructTree();
+	test_bt_diameter();
 }
 
 

@@ -243,7 +243,6 @@ int searchInOrderTable(int *in, int s, int e, int value)
 		printf("Input wrong\n");
 		return -1;
 	}
-
 	for(i = s; i <= e; i++) {
 		if (in[i] == value) {
 			return i;
@@ -251,6 +250,15 @@ int searchInOrderTable(int *in, int s, int e, int value)
 	}
 	return -1;
 }
+
+/* Convert a given tree to SUM tree by changing the values of
+ * node data.*/
+bt_node_t* convertTreeToSumTree(bt_node_t *root)
+{
+	return NULL;
+}
+
+
 /* Construct tree from In-order + pre-order/post-order traversals
  * We need in-order + one of the remaining traversals to fully contruct*/
 bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx)
@@ -335,7 +343,27 @@ bt_node_t* buildTreeInAndPost(int *in, int *po, int start, int end, int *poIdx)
 	return newNode;
 }
 
+int getDiameterOfTree(bt_node_t *root, int* max)
+{
+	int leftHgt, rightHgt;
 
+	if(!root) {
+		return 0;
+	}
+
+	if (!root->left && !root->right) {
+		return 1;
+	}
+
+	leftHgt = getDiameterOfTree(root->left, max);
+	rightHgt = getDiameterOfTree(root->right, max);
+
+	if (*max < (leftHgt + rightHgt + 1)) {
+		*max = leftHgt + rightHgt + 1;
+	}
+
+	return (leftHgt > rightHgt) ? (leftHgt + 1) : (rightHgt + 1) ;
+}
 
 
 
