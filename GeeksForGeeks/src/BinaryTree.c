@@ -39,15 +39,15 @@ void bt_insert(bt_node_t **root, int val)
 
 static void _bt_destroy(bt_node_t *root)
 {
-	if (!root) {
-		return;
-	}
+    if (!root) {
+        return;
+    }
 
-	_bt_destroy(root->left);
-	_bt_destroy(root->right);
-	free(root);
+    _bt_destroy(root->left);
+    _bt_destroy(root->right);
+    free(root);
 
-	return;
+    return;
 }
 
 void bt_destroy(bt_node_t **root)
@@ -166,96 +166,96 @@ int bt_get_size(bt_node_t *root)
 
 int bt_get_height(bt_node_t* root)
 {
-	if (!root) {
-		return 0;
-	} else {
-		int dLeft = bt_get_height(root->left);
-		int dRight = bt_get_height(root->right);
+    if (!root) {
+        return 0;
+    } else {
+        int dLeft = bt_get_height(root->left);
+        int dRight = bt_get_height(root->right);
 
-		return (1 + ((dLeft > dRight) ? dLeft : dRight));
-	}
+        return (1 + ((dLeft > dRight) ? dLeft : dRight));
+    }
 }
 /*Detect if two given trees are identical*/
 int is_bts_identical(bt_node_t *rA, bt_node_t *rB)
 {
-	if (!rA && !rB) {
-		return 1;
-	}
+    if (!rA && !rB) {
+        return 1;
+    }
 
-	if (rA && rB) {
-		return ((rA->val == rB->val) &&
-				is_bts_identical(rA->left, rB->left) &&
-				is_bts_identical(rA->right, rB->right));
-	}
-	return 0;
+    if (rA && rB) {
+        return ((rA->val == rB->val) &&
+                is_bts_identical(rA->left, rB->left) &&
+                is_bts_identical(rA->right, rB->right));
+    }
+    return 0;
 }
 
 bt_node_t* concatenateCL(bt_node_t *l1, bt_node_t *l2)
 {
-	bt_node_t *l1Last ,*l2Last;
+    bt_node_t *l1Last ,*l2Last;
 
-	if (!l1 || !l2) {
-		return l1 ? l1:l2;
-	}
+    if (!l1 || !l2) {
+        return l1 ? l1:l2;
+    }
 
-	l1Last = l1->left;
-	l2Last = l2->left;
+    l1Last = l1->left;
+    l2Last = l2->left;
 
-	/* L1 beginning to
-	 * L2 end and vice-versa*/
-	l1->left = l2Last;
-	l2Last->right = l1;
+    /* L1 beginning to
+     * L2 end and vice-versa*/
+    l1->left = l2Last;
+    l2Last->right = l1;
 
 
-	/* L1 end to
-	 * L2 beginning and vice-versa.*/
-	l1Last->right = l2;
-	l2->left = l1Last;
+    /* L1 end to
+     * L2 beginning and vice-versa.*/
+    l1Last->right = l2;
+    l2->left = l1Last;
 
-	return l1;
+    return l1;
 }
 
 bt_node_t* btToList(bt_node_t *root)
 {
-	bt_node_t *leftList, *rightList;
+    bt_node_t *leftList, *rightList;
 
-	if (!root) {
-		return NULL;
-	}
+    if (!root) {
+        return NULL;
+    }
 
-	if(!root->left && !root->right) {
-		root->left = root->right = root;
-		return root;
-	}
+    if(!root->left && !root->right) {
+        root->left = root->right = root;
+        return root;
+    }
 
-	leftList = btToList(root->left);
-	rightList = btToList(root->right);
+    leftList = btToList(root->left);
+    rightList = btToList(root->right);
 
-	root->left = root->right = root;
+    root->left = root->right = root;
 
-	return concatenateCL(concatenateCL(leftList, root), rightList);
+    return concatenateCL(concatenateCL(leftList, root), rightList);
 }
 
 int searchInOrderTable(int *in, int s, int e, int value)
 {
-	int i;
-	if (!in || (s < 0) || (e < 0)) {
-		printf("Input wrong\n");
-		return -1;
-	}
-	for(i = s; i <= e; i++) {
-		if (in[i] == value) {
-			return i;
-		}
-	}
-	return -1;
+    int i;
+    if (!in || (s < 0) || (e < 0)) {
+        printf("Input wrong\n");
+        return -1;
+    }
+    for(i = s; i <= e; i++) {
+        if (in[i] == value) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 /* Convert a given tree to SUM tree by changing the values of
  * node data.*/
 bt_node_t* convertTreeToSumTree(bt_node_t *root)
 {
-	return NULL;
+    return NULL;
 }
 
 
@@ -263,106 +263,106 @@ bt_node_t* convertTreeToSumTree(bt_node_t *root)
  * We need in-order + one of the remaining traversals to fully contruct*/
 bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx)
 {
-	int iIdx;
-	bt_node_t *newNode;
+    int iIdx;
+    bt_node_t *newNode;
 
-	//printf("%s: start:%d end:%d  preIdx:%d\n", __FUNCTION__, start, end, preIdx ? *preIdx: -1);
-	if (!in || !pre || !preIdx || (start < 0) || (end < 0) || (start > end)) {
-		return NULL;
-	}
+    //printf("%s: start:%d end:%d  preIdx:%d\n", __FUNCTION__, start, end, preIdx ? *preIdx: -1);
+    if (!in || !pre || !preIdx || (start < 0) || (end < 0) || (start > end)) {
+        return NULL;
+    }
 
-	newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
-	if(!newNode) {
-		printf("Memory alloc failed\n");
-		return NULL;
-	}
-	newNode->val = pre[*preIdx];
-	*preIdx = *preIdx + 1;
+    newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+    if(!newNode) {
+        printf("Memory alloc failed\n");
+        return NULL;
+    }
+    newNode->val = pre[*preIdx];
+    *preIdx = *preIdx + 1;
 
-	if (start == end) {
-		newNode->left = NULL;
-		newNode->right = NULL;
-		return newNode;
-	}
+    if (start == end) {
+        newNode->left = NULL;
+        newNode->right = NULL;
+        return newNode;
+    }
 
-	iIdx = searchInOrderTable(in, start, end, newNode->val);
-	if (iIdx < 0) {
-		printf("%d not found in InOrderTraversal\n", newNode->val);
-		return NULL;
-	}
+    iIdx = searchInOrderTable(in, start, end, newNode->val);
+    if (iIdx < 0) {
+        printf("%d not found in InOrderTraversal\n", newNode->val);
+        return NULL;
+    }
 
-	//printf("%s\n", "LEFT");
-	newNode->left = buildTreeInAndPre(in, pre, start, iIdx - 1, preIdx);
+    //printf("%s\n", "LEFT");
+    newNode->left = buildTreeInAndPre(in, pre, start, iIdx - 1, preIdx);
 
-	//printf("%s\n", "RIGHT");
-	newNode->right = buildTreeInAndPre(in, pre, iIdx + 1, end, preIdx);
+    //printf("%s\n", "RIGHT");
+    newNode->right = buildTreeInAndPre(in, pre, iIdx + 1, end, preIdx);
 
-	return newNode;
+    return newNode;
 }
 
 
 bt_node_t* buildTreeInAndPost(int *in, int *po, int start, int end, int *poIdx)
 {
-	int iIdx;
-	bt_node_t *newNode;
+    int iIdx;
+    bt_node_t *newNode;
 
 
-	//printf("%s: start:%d end:%d  poIdx:%d po[poIdx]:%d \n", __FUNCTION__, start, end, poIdx ? *poIdx: -1, po[*poIdx]);
-	if (!in || !po || !poIdx || (start < 0) || (end < 0) || (start > end)) {
-		return NULL;
-	}
+    //printf("%s: start:%d end:%d  poIdx:%d po[poIdx]:%d \n", __FUNCTION__, start, end, poIdx ? *poIdx: -1, po[*poIdx]);
+    if (!in || !po || !poIdx || (start < 0) || (end < 0) || (start > end)) {
+        return NULL;
+    }
 
-	newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
-	if(!newNode) {
-		printf("Memory alloc failed\n");
-		return NULL;
-	}
-	newNode->val = po[*poIdx];
-	*poIdx = *poIdx - 1;
+    newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+    if(!newNode) {
+        printf("Memory alloc failed\n");
+        return NULL;
+    }
+    newNode->val = po[*poIdx];
+    *poIdx = *poIdx - 1;
 
-	if (start == end) {
-		newNode->left = NULL;
-		newNode->right = NULL;
-		return newNode;
-	}
+    if (start == end) {
+        newNode->left = NULL;
+        newNode->right = NULL;
+        return newNode;
+    }
 
-	iIdx = searchInOrderTable(in, start, end, newNode->val);
-	if (iIdx < 0) {
-		//printf("%d not found in InOrderTraversal\n", newNode->val);
-		return NULL;
-	} else {
-		//printf("Found %d at %d in in\n", newNode->val, iIdx);
-	}
+    iIdx = searchInOrderTable(in, start, end, newNode->val);
+    if (iIdx < 0) {
+        //printf("%d not found in InOrderTraversal\n", newNode->val);
+        return NULL;
+    } else {
+        //printf("Found %d at %d in in\n", newNode->val, iIdx);
+    }
 
-	//printf("%s\n", "RIGHT");
-	newNode->right = buildTreeInAndPost(in, po, iIdx + 1, end, poIdx);
+    //printf("%s\n", "RIGHT");
+    newNode->right = buildTreeInAndPost(in, po, iIdx + 1, end, poIdx);
 
-	//printf("%s\n", "LEFT");
-	newNode->left = buildTreeInAndPost(in, po, start, iIdx - 1, poIdx);
+    //printf("%s\n", "LEFT");
+    newNode->left = buildTreeInAndPost(in, po, start, iIdx - 1, poIdx);
 
-	return newNode;
+    return newNode;
 }
 
 int getDiameterOfTree(bt_node_t *root, int* max)
 {
-	int leftHgt, rightHgt;
+    int leftHgt, rightHgt;
 
-	if(!root) {
-		return 0;
-	}
+    if(!root) {
+        return 0;
+    }
 
-	if (!root->left && !root->right) {
-		return 1;
-	}
+    if (!root->left && !root->right) {
+        return 1;
+    }
 
-	leftHgt = getDiameterOfTree(root->left, max);
-	rightHgt = getDiameterOfTree(root->right, max);
+    leftHgt = getDiameterOfTree(root->left, max);
+    rightHgt = getDiameterOfTree(root->right, max);
 
-	if (*max < (leftHgt + rightHgt + 1)) {
-		*max = leftHgt + rightHgt + 1;
-	}
+    if (*max < (leftHgt + rightHgt + 1)) {
+        *max = leftHgt + rightHgt + 1;
+    }
 
-	return (leftHgt > rightHgt) ? (leftHgt + 1) : (rightHgt + 1) ;
+    return (leftHgt > rightHgt) ? (leftHgt + 1) : (rightHgt + 1) ;
 }
 
 
