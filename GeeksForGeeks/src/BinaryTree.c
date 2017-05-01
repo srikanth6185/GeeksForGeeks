@@ -365,6 +365,62 @@ int getDiameterOfTree(bt_node_t *root, int* max)
     return (leftHgt > rightHgt) ? (leftHgt + 1) : (rightHgt + 1) ;
 }
 
+//Totest
+
+void doubleTree(bt_node_t* root)
+{
+    bt_node_t* newNode;
+
+    if (!root) {
+        return;
+    }
+
+    newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+    newNode->left = root->left;
+    newNode->val = root->val;
+    newNode->right = NULL;
+    root->left = newNode;
+
+    doubleTree(newNode->left);
+    doubleTree(root->right);
+}
+
+
+
+/* A tree is foldable if its left subtree is mirror of its
+ * right subtree.
+ */
+int isTreeFoldableImpl(bt_node_t *a, bt_node_t* b)
+{
+    if (!a && !b) {
+        return 1;
+    } else if (!a || !b ) {
+        return 0;
+    } else {
+        return (isTreeFoldableImpl(a->left, b ->right) &&
+               isTreeFoldableImpl(a->right, b->left));
+    }
+}
+
+/* Check if the left trbee and right tree are
+ * mirrors of each other.
+ */
+int isTreeFoldable(bt_node_t *root)
+{
+    if (!root) {
+        return 0;
+    }
+
+    return isTreeFoldableImpl(root->left, root->right);
+}
+
+
+
+
+
+
+
+
 
 
 
