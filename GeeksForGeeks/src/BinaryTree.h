@@ -1,10 +1,12 @@
 #ifndef _BINARY_TREE_H_
 #define _BINARY_TREE_H_
+#include <limits.h>
 
 typedef struct bt_node_s {
     int val;
     struct bt_node_s *right;
     struct bt_node_s *left;
+    struct bt_node_s *nextRight;
 } bt_node_t;
 
 
@@ -21,5 +23,14 @@ int bt_get_height(bt_node_t* root);
 bt_node_t* btToList(bt_node_t *root);
 bt_node_t* buildTreeInAndPre(int *in, int *pre, int start, int end, int *preIdx);
 bt_node_t* buildTreeInAndPost(int *in, int *pre, int start, int end, int *poIdx);
+
 int getDiameterOfTree(bt_node_t *root, int* max);
+int isSubTree(bt_node_t *t1, bt_node_t* t2);
+int isIdenticalTree(bt_node_t *t1, bt_node_t* t2);
+void connectLevelNodes(bt_node_t* root);
+void connectLevelNodesFaster(bt_node_t* root);
+
+
+void bt_get_max_sum_path(bt_node_t *root);
+
 #endif  //_BINARY_TREE_H_

@@ -677,13 +677,71 @@ void test_bt_diameter(void)
     bt_destroy(&root);
 }
 
+void test_bt_subtree(void)
+{
+    bt_node_t *t1 = NULL, *t2 = NULL;
+    int arr[10] = {5,2,1,3,7,6,8};
+    int arr1[3] = {7,6,8};
+    int i;
+
+    for (i = 0; i < 7; i++) {
+        bt_insert(&t1, arr[i]);
+    }
+
+    bt_print_level(t1);
+
+    for (i = 0; i < 3; i++) {
+        bt_insert(&t2, arr1[i]);
+    }
+
+    bt_print_level(t2);
+
+    printf("t2 %s a subtree of t1\n", isSubTree(t1, t2) ? "is" : "is not");
+
+    printf("Height of t2 is %d\n", bt_get_height(t2));
+
+    bt_destroy(&t1);
+    bt_destroy(&t2);
+}
+
+void testConnectLevels(void)
+{
+    bt_node_t *t1 = NULL;
+    int arr[10] = {5,2,1,3,7,6,8};
+    int i;
+
+    for (i = 0; i < 7; i++) {
+        bt_insert(&t1, arr[i]);
+    }
+
+    connectLevelNodesFaster(t1);
+	connectLevelNodes(t1);
+    bt_destroy(&t1);
+}
+
+void testMaxSumPath(void)
+{
+    bt_node_t *t1 = NULL;
+    int arr[10] = {5,2,1,3,7,6,4};
+    int i;
+
+    for (i = 0; i < 7; i++) {
+        bt_insert(&t1, arr[i]);
+    }
+    bt_get_max_sum_path(t1);
+    bt_destroy(&t1);
+}
+
 void test_bt_all(void)
 {
     //test_bt_print();
     //test_identical_bt();
     //test_bt_to_List();
-    test_bt_constructTree();
-    test_bt_diameter();
+    //test_bt_constructTree();
+    //test_bt_diameter();
+    //test_bt_subtree();
+    //testConnectLevels();
+	testMaxSumPath();
 }
 
 

@@ -79,6 +79,7 @@ void bt_print_level(bt_node_t *root)
         printf("%d ", curr->val);
     }
     q_destroy(q);
+    printf("\n");
     return;
 }
 
@@ -414,15 +415,184 @@ int isTreeFoldable(bt_node_t *root)
     return isTreeFoldableImpl(root->left, root->right);
 }
 
+int isIdenticalTree(bt_node_t *t1, bt_node_t* t2)
+{
+	if (!t1 && !t2) {
+		return 1;
+	} else if (!t1 || !t2) {
+		return 0;
+	}
+
+	if (t1->val != t2->val) {
+		return 0;
+	}
+
+	return (isIdenticalTree(t1->left, t2->left) &&
+			isIdenticalTree(t1->right, t2->right));
+}
+
+/*Check if a given tree is a subtree of another.*/
+int isSubTree(bt_node_t *t1, bt_node_t* t2)
+{
+	if (!t1 && !t2) {
+		return 1;
+	} else if (!t1 || !t2) {
+		return 0;
+	}
+
+	if (isIdenticalTree(t1, t2)) {
+		return 1;
+	}
+
+	return (isSubTree(t1->left, t2) || isSubTree(t1->right, t2));
+}
+
+void printLevelNodesImpl(bt_node_t* root, int level)
+{
+	bt_node_t* run;
+	if (!root) {
+		return;
+	}
 
 
+	if (level == 1) {
+		run = root;
+		while (run) {
+			printf("%d\t", run->val);
+			run = run->nextRight;
+		}
+		return;
+	}
+
+	if (root->left) {
+		printLevelNodesImpl(root->left, level - 1);
+	} else {
+		printLevelNodesImpl(root->right, level - 1);
+	}
+
+	return;
+}
+
+bt_node_t* connectLevelNodesImpl(bt_node_t* root, int level)
+{
+	bt_node_t* left, *right, *runner;
+
+	if (!root) {
+		return NULL;
+	}
 
 
+	if (level == 1) {
+		root->nextRight = NULL;
+		return root;
+	}
+
+	left = connectLevelNodesImpl(root->left, level - 1);
+	right = connectLevelNodesImpl(root->right, level -1);
+
+	if (left) {
+		runner = left;
+		while(runner->nextRight) {
+			runner = runner->nextRight;
+		}
+		runner->nextRight = right;
+		return left;
+	} else {
+		return right;
+	}
+}
+
+void connectLevelNodes(bt_node_t* root)
+{
+	int hgt = bt_get_height(root), i;
+
+	for(i = 1; i <= hgt; i++) {
+		//connectLevelNodesImpl(root , i);
+	}
+
+	/*Test*/
+	for(i = 1; i <= hgt; i++) {
+		printLevelNodesImpl(root , i);
+		printf("\n");
+	}
+
+	return;
+}
 
 
+void connectLevelNodesFaster(bt_node_t* root)
+{
+	if (!root) {
+		return;
+	}
 
+	if (root->left) {
+		root->left->nextRight = root->right;
+	}
 
+	if (root->right) {
+		if (root->nextRight) {
+			if (root->nextRight->left) {
+				root->right->nextRight = root->nextRight->left;
+			} else {
+				root->right->nextRight = root->nextRight->right;
+			}
+		}
+	}
 
+	connectLevelNodesFaster(root->left);
+	connectLevelNodesFaster(root->right);
 
+	return;
+}
 
+/*Get max sum path from root to leaf*/
+void bt_get_max_sum_leaf(bt_node_t *root, int* sum, bt_node_t **leaf)
+{
+	int curr_sum;
+
+	if (!root) {
+		return;
+	}
+
+	curr_sum = *sum + root->val;
+
+	if (!root->left && !root->right) {
+		if (curr_sum > *sum) {
+			*sum = curr_sum;
+			*leaf = root;
+		}
+		return;
+	}
+
+	bt_get_max_sum_leaf(root->left, sum, leaf);
+	bt_get_max_sum_leaf(root->right, sum, leaf);
+}
+
+int bt_print_path(bt_node_t *root, bt_node_t *leaf)
+{
+	if (!root) {
+		return 0;
+	}
+
+	if ((root == leaf) ||
+	    bt_print_path(root->left, leaf) ||
+		bt_print_path(root->right, leaf)) {
+		printf("%d\t", root->val);
+		return 1;
+	}
+
+	return 0;
+}
+
+void bt_get_max_sum_path(bt_node_t *root)
+{
+	int sum = INT_MIN;
+	bt_node_t* leaf = NULL;
+
+	bt_get_max_sum_leaf(root, &sum, &leaf);
+	bt_print_path(root, leaf);
+
+	return;
+}
 
