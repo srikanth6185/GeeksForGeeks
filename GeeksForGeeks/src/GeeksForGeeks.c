@@ -732,6 +732,24 @@ void testMaxSumPath(void)
     bt_destroy(&t1);
 }
 
+void test_bt_specialTreeConstruct(void)
+{
+    bt_node_t *t1 = NULL;
+
+    //int arr[10] = {1,5,10,40,30,15,28,20};
+    //t1 = buildSpecialTreeIn(arr, 0, 7);
+
+    char arrT[10] = {'N','N','L','L','N','L','L'};
+	int arr[10] = {10,30,20,5,15,22,36}, i = 0;
+
+    t1 = buildSpecialTree1(arr, arrT, &i, 7);
+
+	bt_print_level(t1);
+    bt_destroy(&t1);
+
+}
+
+
 void test_bt_all(void)
 {
     //test_bt_print();
@@ -741,7 +759,8 @@ void test_bt_all(void)
     //test_bt_diameter();
     //test_bt_subtree();
     //testConnectLevels();
-	testMaxSumPath();
+	//testMaxSumPath();
+	test_bt_specialTreeConstruct();
 }
 
 

@@ -4,6 +4,17 @@
 #include"Queue.h"
 #include"Stack.h"
 
+bt_node_t *bt_get_new_node(int val)
+{
+	bt_node_t *newNode = (bt_node_t*)calloc(1, sizeof(bt_node_t));
+	if (!newNode) {
+		printf("Node alloc failed\n");
+		return NULL;
+	}
+	newNode->val = val;
+	return newNode;
+}
+
 void bt_insert(bt_node_t **root, int val)
 {
     if (*root) {
@@ -595,4 +606,102 @@ void bt_get_max_sum_path(bt_node_t *root)
 
 	return;
 }
+
+/* Build special tree from in order arr where every key is greater than its
+ * left and right subtrees */
+
+int getMaxIdx(int *in, int start, int end)
+{
+	int max = INT_MIN, i, resIdx = -1;
+
+	if (!in || (start > end)) {
+		return -1;
+	}
+
+	for(i = start; i <= end; i++) {
+		if (max < in[i]) {
+			max = in[i];
+			resIdx = i;
+		}
+	}
+
+	return resIdx;
+}
+
+
+
+bt_node_t* buildSpecialTreeIn(int *in, int start, int end)
+{
+    int iIdx;
+    bt_node_t *newNode;
+
+    if (!in || (start < 0) || (end < 0) || (start > end)) {
+        return NULL;
+    }
+
+    iIdx = getMaxIdx(in, start, end);
+    if (iIdx < 0) {
+        printf("Max calculation failure\n");
+        return NULL;
+    }
+
+    newNode = (bt_node_t*)malloc(sizeof(bt_node_t));
+    if(!newNode) {
+        printf("Memory alloc failed\n");
+        return NULL;
+    }
+
+    newNode->val = in[iIdx];
+
+    if (start == end) {
+        newNode->left = NULL;
+        newNode->right = NULL;
+        return newNode;
+    }
+
+
+    //printf("%s\n", "LEFT");
+    newNode->left = buildSpecialTreeIn(in,start, iIdx - 1);
+
+    //printf("%s\n", "RIGHT");
+    newNode->right = buildSpecialTreeIn(in, iIdx + 1, end);
+
+    return newNode;
+}
+
+
+
+/* Construct special tree where two arrays are given
+ * 1. Pre order traversal
+ * 2. Another array where each value is 'N' or 'L'
+ *    depending on whether its a node or a leaf.
+ *
+ * condition: Every node is a leaf or has two children.
+ **/
+
+bt_node_t* buildSpecialTree1(int *node, char *nodeT, int *idx, int max)
+{
+	bt_node_t *newNode;
+
+	if (!node || !nodeT || !idx || (*idx >= max)) {
+		return NULL;
+	}
+
+	newNode = bt_get_new_node(node[*idx]);
+
+	if (nodeT[*idx] == 'N') {
+		*idx = *idx + 1;
+
+		newNode->left = buildSpecialTree1(node, nodeT, idx, max);
+		newNode->right = buildSpecialTree1(node, nodeT, idx, max);
+
+	} else {
+
+		*idx = *idx + 1;
+	}
+
+	return newNode;
+}
+
+
 

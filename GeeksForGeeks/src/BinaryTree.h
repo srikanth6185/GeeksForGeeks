@@ -11,7 +11,6 @@ typedef struct bt_node_s {
 
 
 
-
 void bt_insert(bt_node_t **root, int val);
 void bt_destroy(bt_node_t **root);
 void bt_print_level(bt_node_t *root);
@@ -32,5 +31,7 @@ void connectLevelNodesFaster(bt_node_t* root);
 
 
 void bt_get_max_sum_path(bt_node_t *root);
+bt_node_t* buildSpecialTreeIn(int *in, int start, int end);
+bt_node_t* buildSpecialTree1(int *node, char *nodeT, int *idx, int max);
 
 #endif  //_BINARY_TREE_H_
