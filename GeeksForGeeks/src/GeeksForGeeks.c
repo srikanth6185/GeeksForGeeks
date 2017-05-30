@@ -749,6 +749,36 @@ void test_bt_specialTreeConstruct(void)
 
 }
 
+void test_completeTree(void)
+{
+    bt_node_t *t1 = NULL;
+	int arr[10] = {5,6}, i = 0;
+
+    for (i = 0; i < 2; i++) {
+        bt_insert(&t1, arr[i]);
+    }
+
+	bt_print_level(t1);
+
+	printf("Tree is %s\n", isCompleteTree(t1) ? "complete": "incomplete");
+
+	bt_destroy(&t1);
+
+}
+
+void test_printBoundary(void)
+{
+    bt_node_t *t1 = NULL;
+	int arr[10] = {8,4,2,6,5,7,9,10}, i = 0;
+
+    for (i = 0; i < 8; i++) {
+        bt_insert(&t1, arr[i]);
+    }
+
+	bt_print_level(t1);
+	bt_print_bndry_nodes(t1,1,0,0,0);
+	bt_destroy(&t1);
+}
 
 void test_bt_all(void)
 {
@@ -760,7 +790,9 @@ void test_bt_all(void)
     //test_bt_subtree();
     //testConnectLevels();
 	//testMaxSumPath();
-	test_bt_specialTreeConstruct();
+	//test_bt_specialTreeConstruct();
+	//test_completeTree();
+	test_printBoundary();
 }
 
 
