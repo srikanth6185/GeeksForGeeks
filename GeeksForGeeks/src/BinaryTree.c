@@ -722,6 +722,7 @@ int isCompleteTree(bt_node_t* root)
 //TODO:
 //This is not the right way to accomplish this.
 //Fix it. Split into left boundary, leaves and right boundary.
+//Test commit.
 
 #define LEFT 1
 #define RIGHT 2
