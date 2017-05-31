@@ -553,8 +553,10 @@ void test_bt_print(void)
 
     //bt_print_level(root);
     //bt_print_inorder_no_rec_st(root);
-    bt_print_inorder_morris_traversal(root);
-    printf(" Size of Tree: %d\n", bt_get_size(root));
+    //bt_print_inorder_morris_traversal(root);
+    //bt_print_preorder_iterative(root);
+    bt_print_preorder_morris(root);
+    //printf(" Size of Tree: %d\n", bt_get_size(root));
 
     bt_destroy(&root);
     return;
@@ -776,13 +778,13 @@ void test_printBoundary(void)
     }
 
 	bt_print_level(t1);
-	bt_print_bndry_nodes(t1,1,0,0,0);
+	bt_print_bndry_nodes(t1);
 	bt_destroy(&t1);
 }
 
 void test_bt_all(void)
 {
-    //test_bt_print();
+    test_bt_print();
     //test_identical_bt();
     //test_bt_to_List();
     //test_bt_constructTree();
@@ -792,7 +794,7 @@ void test_bt_all(void)
 	//testMaxSumPath();
 	//test_bt_specialTreeConstruct();
 	//test_completeTree();
-	test_printBoundary();
+	//test_printBoundary();
 }
 
 

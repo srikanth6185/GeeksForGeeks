@@ -719,81 +719,137 @@ int isCompleteTree(bt_node_t* root)
 
 	return (isCompleteTree(root->left) && isCompleteTree(root->right));
 }
-//TODO:
-//This is not the right way to accomplish this.
-//Fix it. Split into left boundary, leaves and right boundary.
-//Test commit.
 
-#define LEFT 1
-#define RIGHT 2
-void
-bt_print_bndry_nodes
-(
-		bt_node_t *root,
-		int isRoot,
-		int currDir,
-		int printDir,
-		int internalNode
-)
+void bt_print_bndry_nodes_left(bt_node_t* root)
 {
 	if (!root) {
 		return;
 	}
 
-	if (isRoot) {
-		printf("%d\n", root->val);
-		bt_print_bndry_nodes(root->left, 0, LEFT, LEFT, 0);
-		bt_print_bndry_nodes(root->left, 0, RIGHT, RIGHT, 0);
-		return;
-	}
-
-	if (!root->left && !root->right) {
-		printf("%d\n", root->val);
-		return;
-	}
-
-	if (printDir == LEFT) {
-		if (currDir == printDir) {
-			if (!internalNode ||
-				(internalNode && (!root->left && !root->right))) {
-				printf("%d\n", root->val);
-			}
-		}
-		if (!internalNode) {
-			bt_print_bndry_nodes(root->left, 0, LEFT, printDir, 0);
-			bt_print_bndry_nodes(root->right, 0, RIGHT, printDir, 1);
-		} else {
-			bt_print_bndry_nodes(root->left, 0, LEFT, printDir, internalNode);
-			bt_print_bndry_nodes(root->right, 0, RIGHT, printDir, internalNode);
-		}
-	} else {
-		if (!internalNode) {
-			bt_print_bndry_nodes(root->left, 0, LEFT, printDir, 1);
-			bt_print_bndry_nodes(root->right, 0, RIGHT, printDir, 0);
-		} else {
-			bt_print_bndry_nodes(root->left, 0, LEFT, printDir, internalNode);
-			bt_print_bndry_nodes(root->right, 0, RIGHT, printDir, internalNode);
-		}
-
-		if (currDir == printDir) {
-			if (!internalNode ||
-				(internalNode && (!root->left && !root->right))) {
-				printf("%d\n", root->val);
-			}
-		}
+	if (root->left) {
+		printf("%d ", root->val);
+		bt_print_bndry_nodes_left(root->left);
+	} else if (root->right) {
+		printf("%d ", root->val);
+		bt_print_bndry_nodes_left(root->right);
 	}
 	return;
 }
 
+void bt_print_bndry_nodes_leaves(bt_node_t *root)
+{
+	if (!root) {
+		return;
+	}
+
+	if (!root->left && !root->right) {
+		printf("%d ", root->val);
+		return;
+	}
+
+	bt_print_bndry_nodes_leaves(root->left);
+	bt_print_bndry_nodes_leaves(root->right);
+
+}
+
+void bt_print_bndry_nodes_right(bt_node_t *root)
+{
+	if (!root) {
+		return;
+	}
+
+	if (root->right) {
+		bt_print_bndry_nodes_right(root->right);
+		printf("%d ", root->val);
+	} else if (root->left) {
+		bt_print_bndry_nodes_right(root->left);
+		printf("%d ", root->val);
+	}
+}
+
+void bt_print_bndry_nodes(bt_node_t *root)
+{
+	/*Print the left boundary including the root*/
+	bt_print_bndry_nodes_left(root);
+	/*Print the leaves*/
+	bt_print_bndry_nodes_leaves(root->left);
+	bt_print_bndry_nodes_leaves(root->right);
+
+	/*Print the right boundary excluding the  */
+	bt_print_bndry_nodes_right(root->right);
+}
 
 
+/*Iterative preorder traversal using stack*/
+void bt_print_preorder_iterative(bt_node_t *root)
+{
+	bt_node_t *curr;
+	st_t *st;
 
+	if (!root) {
+		printf("Empty tree\n");
+		return;
+	}
 
+	st = st_create(VOID_DATA);
+	st_push(st, 0, root);
 
+	while (!is_st_empty(st)) {
+		st_pop(st,NULL, (void**)&curr);
+		printf("%d\n", curr->val);
 
+		if (curr->right) {
+			st_push(st, 0, curr->right);
+		}
 
+		if (curr->left) {
+			st_push(st, 0, curr->left);
+		}
+	}
 
+	st_destroy(st);
+}
 
+/**
+ * Algorithm
+ * 1. If node has no left child, print and move to right child.
+ * 2. If node has left child :
+ * 	  Find predecessor for this node (left and right till leaf)
+ * 	  a. If current node is encountered while finding the predecessor then
+ * 	     reset the right child of the predecessor and move to right.
+ * 	  b. Print node and set the right child of the predecossor to the current
+ * 	     node and move left.
+ *
+ */
+void bt_print_preorder_morris(bt_node_t *root)
+{
+	if (!root) {
+		return;
+	}
+
+	while (root) {
+		if (!root->left) {
+			printf ("%d ", root->val);
+			root = root->right;
+		} else {
+			bt_node_t *curr = root->left;
+			while (curr->right && (curr->right != root)) {
+				curr = curr->right;
+			}
+
+			if (curr->right) {
+				curr->right = NULL;
+				root = root->right;
+			} else {
+				printf("%d ", root->val);
+				curr->right = root;
+				root = root->left;
+			}
+		}
+	}
+	printf("\n");
+	return;
+}
 
 
 
