@@ -7,6 +7,7 @@ typedef struct bt_node_s {
     struct bt_node_s *right;
     struct bt_node_s *left;
     struct bt_node_s *nextRight;
+    int liss;
 } bt_node_t;
 
 
@@ -38,6 +39,7 @@ bt_node_t* buildSpecialTreeIn(int *in, int start, int end);
 bt_node_t* buildSpecialTree1(int *node, char *nodeT, int *idx, int max);
 int isCompleteTree(bt_node_t* root);
 void bt_print_bndry_nodes(bt_node_t *root);
-
+int LISS(bt_node_t *root);
+void bt_print_post_order_iterative(bt_node_t *bt);
 
 #endif  //_BINARY_TREE_H_

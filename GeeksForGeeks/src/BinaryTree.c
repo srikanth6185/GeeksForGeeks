@@ -4,6 +4,8 @@
 #include"Queue.h"
 #include"Stack.h"
 
+#define MAX(a,b)  ((a >= b) ? a : b)
+
 bt_node_t *bt_get_new_node(int val)
 {
     bt_node_t *newNode = (bt_node_t*)calloc(1, sizeof(bt_node_t));
@@ -850,6 +852,100 @@ void bt_print_preorder_morris(bt_node_t *root)
 	printf("\n");
 	return;
 }
+
+/* DS: Use 2 stacks
+ * Algorithm:
+ * 1. push root to stack1
+ * 2. while stack1 is not empty
+ * 	  - pop top
+ * 	  - push right child and then left child into stack1
+ * 	  - push node to stack2
+ * 3. Print stack2 elements.
+ * */
+void bt_print_post_order_iterative(bt_node_t *bt)
+{
+	st_t *s1, *s2;
+	bt_node_t *curr;
+
+	if (!bt) {
+		return;
+	}
+
+	s1 = st_create(VOID_DATA);
+	s2 = st_create(VOID_DATA);
+
+	st_push(s1, 0, bt);
+
+	while (!is_st_empty(s1)) {
+		st_pop(s1, NULL, (void**)&curr);
+
+		//printf("popping %d from s1\n", curr->val);
+
+		if (curr->left) {
+			//printf("pushing %d to s1\n", curr->left->val);
+			st_push(s1, 0, curr->left);
+		}
+
+		if (curr->right) {
+			//printf("pushing %d to s1\n", curr->right->val);
+			st_push(s1, 0, curr->right);
+		}
+
+		//printf("pushing %d to s2\n", curr->val);
+		st_push(s2, 0, curr);
+	}
+
+
+	while(!is_st_empty(s2)) {
+		st_pop(s2, NULL, (void**)&curr);
+		printf("%d ", curr->val);
+	}
+
+	printf("\n");
+
+	st_destroy(s1);
+	st_destroy(s2);
+
+	return;
+}
+
+/**
+ * LISS - Largest Independent Set Size
+ * Algorithm (with memoization):
+ * Max of LISS (grandchildren) and LISS of (children)
+ **/
+int LISS(bt_node_t *root)
+{
+	int liss_children, liss_gchildren = 1;
+
+	if (!root) {
+		return 0;
+	}
+
+	if (root->liss) {
+		return root->liss;
+	} else if (!root->left && !root->right) {
+		root->liss = 1;
+		return root->liss;
+	}
+
+	liss_children = LISS(root->left) + LISS(root->right);
+
+	if (root->left) {
+		liss_gchildren += LISS(root->left->left) + LISS(root->left->right);
+	}
+
+	if (root->right) {
+		liss_gchildren += LISS(root->right->left) + LISS(root->right->right);
+	}
+
+	root->liss = MAX(liss_children, liss_gchildren);
+
+	return root->liss;
+}
+
+
+
 
 
 
