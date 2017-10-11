@@ -26,7 +26,7 @@ int ll_create(node_t **head, unsigned int n, int *input_arr)
     }
 
     tmp->data = data++;
-    while (((n-1) > 0)) {
+    while ((n-1) > 0) {
         tmp->next = (node_t*)malloc(sizeof(node_t));
         if(tmp->next == NULL) {
             goto error;
