@@ -89,7 +89,9 @@ int ll_delete_nth_node(node_t **head, int n)
 {
     node_t *prev = NULL, *curr= *head, *del_node;
     int ctr = 1;
+
     printf("%s: START\n", __FUNCTION__);
+
     /*Keep walking the list till you reach nth node.*/
     while(curr) {
         if (ctr == n) {
