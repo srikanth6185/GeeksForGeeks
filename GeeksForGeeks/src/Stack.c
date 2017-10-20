@@ -13,6 +13,7 @@ st_t* st_create(int type)
 	new_st->type = type;
 	return new_st;
 }
+
 void st_destroy(st_t *st)
 {
 	if (st) {
@@ -26,11 +27,11 @@ void st_destroy(st_t *st)
 	}
 }
 
-
 void st_push(st_t *st, int val, void *data)
 {
 	if (st) {
-		st_node_t* new_node = (st_node_t*)calloc(sizeof(char), sizeof(st_t));
+		st_node_t* new_node = (st_node_t*)calloc(sizeof(char), sizeof(st_node_t));
+
 		if (st->type == VAL) {
 			new_node->val = val;
 		} else if (st->type == VOID_DATA) {

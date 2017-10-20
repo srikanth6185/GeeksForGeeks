@@ -20,7 +20,7 @@ void test_ll(void)
 {
     node_t *head;
 
-    ll_create(&head, 10, NULL);
+    ll_create(&head, 10, 0);
     ll_print(head);
 
     ll_delete_nth_node(&head, 1);
@@ -557,6 +557,7 @@ void test_bt_print(void)
     //bt_print_preorder_iterative(root);
     //bt_print_preorder_morris(root);
     //printf(" Size of Tree: %d\n", bt_get_size(root));
+//TODO: Need to debug this
     bt_print_post_order_iterative(root);
     bt_destroy(&root);
     return;
