@@ -6,6 +6,7 @@
  */
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 #include "Graph.h"
 
 
@@ -37,6 +38,10 @@ graph_t *create_graph(int vertices)
 	return newG;
 }
 
+void destroy_graph(graph_t *graph)
+{
+
+}
 
 int add_vertex(graph_t* graph, int v)
 {
@@ -45,8 +50,35 @@ int add_vertex(graph_t* graph, int v)
 
 int add_edge(graph_t *graph, int v, int u)
 {
+	adj_node_t* new_edge[2];
+
 	if (!graph || (v < 0) || (u < 0) ||
 		(v >= graph->vertices) || (u >= graph->vertices)) {
 		return -1;
 	}
+
+	new_edge[0] = (adj_node_t*)malloc(sizeof(adj_node_t));
+	new_edge[1] = (adj_node_t*)malloc(sizeof(adj_node_t));
+
+	if (!new_edge[0] || !new_edge[1]) {
+		if (new_edge[0]) {
+			free(new_edge[0]);
+		}
+
+		if (new_edge[1]) {
+			free(new_edge[1]);
+		}
+		return -1;
+	}
+
+	new_edge[0]->dest = u;
+	new_edge[0]->next = graph->adj_arr[v].head;
+	graph->adj_arr[v].head = new_edge[0];
+
+	new_edge[1]->dest = u;
+	new_edge[1]->next = graph->adj_arr[v].head;
+	graph->adj_arr[v].head = new_edge[1];
+
+	return 1;
+
 }
