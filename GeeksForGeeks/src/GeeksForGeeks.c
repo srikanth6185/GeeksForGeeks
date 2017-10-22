@@ -876,11 +876,29 @@ void test_gr_dfs(void)
     destroy_graph(graph);
 }
 
+void test_topological_sort(void)
+{
+	graph_t *graph = test_create_graph(6);
+
+	add_edge(graph, 5, 2, DIRECTIONAL);
+    add_edge(graph, 5, 0, DIRECTIONAL);
+    add_edge(graph, 4, 0, DIRECTIONAL);
+    add_edge(graph, 4, 1, DIRECTIONAL);
+    add_edge(graph, 2, 3, DIRECTIONAL);
+    add_edge(graph, 3, 1, DIRECTIONAL);
+
+	print_graph(graph);
+
+	topological_sort_graph(graph);
+    destroy_graph(graph);
+}
+
 void test_graph_all(void)
 {
 	//test_gr_create_print();
 	//test_gr_bfs();
-	test_gr_dfs();
+	//test_gr_dfs();
+	test_topological_sort();
 }
 
 /*Main program to test all the problems.*/

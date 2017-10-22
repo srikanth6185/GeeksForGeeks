@@ -233,4 +233,47 @@ void dfs_traversal_graph(graph_t *graph, int v)
     return;
 }
 
+/* Fill the stack with reverse DFS
+ * */
+void topological_sort_util(graph_t* graph, int v, st_t *st)
+{
+	adj_node_t *adj = graph->adj_arr[v].head;
+	graph->adj_arr[v].visited = 1;
 
+	while(adj) {
+		if (!graph->adj_arr[adj->dest].visited) {
+			topological_sort_util(graph, adj->dest, st);
+		}
+		adj = adj->next;
+	}
+
+	st_push(st, v, NULL);
+}
+
+void topological_sort_graph(graph_t* graph)
+{
+	st_t *st;
+	int idx, vertex;
+
+	if (!graph) {
+		printf("%s: BAD INPUT\n", __FUNCTION__);
+		return;
+	}
+	st = st_create(VAL);
+    reset_visited(graph);
+
+    for(idx = 0; idx < graph->vertices; idx++) {
+    		if (!graph->adj_arr[idx].visited) {
+    			topological_sort_util(graph, idx, st);
+    		}
+    }
+
+    printf("Topological ordering: ");
+    while (!is_st_empty(st)) {
+		st_pop(st, &vertex, NULL);
+    		printf("%d ", vertex);
+    }
+
+    st_destroy(st);
+    return;
+}

@@ -40,8 +40,6 @@ int add_edge(graph_t *graph, int v, int u, int bidirectional);
 void print_graph(graph_t *graph);
 void bfs_traversal_graph(graph_t* graph, int v);
 void dfs_traversal_graph(graph_t *graph, int v);
-
-
-
+void topological_sort_graph(graph_t* graph);
 
 #endif /* GRAPH_H_ */
