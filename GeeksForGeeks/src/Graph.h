@@ -13,6 +13,7 @@
 
 typedef struct adj_node_s {
 	int dest;
+	int weight;
 	struct adj_node_s *next;
 }adj_node_t;
 
@@ -38,7 +39,7 @@ int add_vertex(graph_t* graph, int v);
 int add_edge(graph_t *graph, int v, int u, int bidirectional);
 void print_graph(graph_t *graph);
 void bfs_traversal_graph(graph_t* graph, int v);
-
+void dfs_traversal_graph(graph_t *graph, int v);
 
 
 

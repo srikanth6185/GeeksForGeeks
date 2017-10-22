@@ -184,12 +184,18 @@ void bfs_traversal_graph(graph_t* graph, int v)
     return;
 }
 
+/* DFS traversal from the given vertex.
+ * For disconnected graphs we can call the traversal
+ * on all the vertices.
+ * */
 void dfs_traversal_graph(graph_t *graph, int v)
 {
 	st_t* st;
 	adj_node_t* adj;
 
-    if (!graph || graph->vertices <= 0 ||
+	printf("\n%s: START\n", __FUNCTION__);
+
+	if (!graph || graph->vertices <= 0 ||
         (v < 0) || (v > graph->vertices)) {
         printf("%s: BAD INPUT\n", __FUNCTION__);
         return;
@@ -200,28 +206,29 @@ void dfs_traversal_graph(graph_t *graph, int v)
     st_push(st, v, NULL);
 
     while(!is_st_empty(st)) {
-    		st_top(st, &v, NULL);
-    		//Vertex not visited so visit.
-    		if(!graph->adj_arr[v].visited) {
-    			graph->adj_arr[v].visited = 1;
-    			printf(" %d ", v);
-		}
+    	st_top(st, &v, NULL);
+    	//Vertex not visited so visit.
+    	if(!graph->adj_arr[v].visited) {
+    		graph->adj_arr[v].visited = 1;
+    		printf("%d ", v);
+    	}
 
-    		adj = graph->adj_arr[v].head;
-		while (adj) {
-			if (!graph->adj_arr[adj->dest].visited) {
-				st_push(st,adj->dest, NULL);
-				break;
-			}
-			adj = adj->next;
-		}
-		//All adj nodes visited
-		//Remove it from the stack
-		if (!adj) {
-			st_pop(st, &v, NULL);
-		}
+    	adj = graph->adj_arr[v].head;
+    	while (adj) {
+    		if (!graph->adj_arr[adj->dest].visited) {
+    			st_push(st,adj->dest, NULL);
+    			break;
+    		}
+    		adj = adj->next;
+    	}
+    	//All adj nodes visited
+    	//Remove it from the stack
+    	if (!adj) {
+    		st_pop(st, &v, NULL);
+    	}
     }
 
+    printf("\n");
     st_destroy(st);
     return;
 }
