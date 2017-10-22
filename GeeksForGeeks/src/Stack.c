@@ -63,6 +63,17 @@ void st_pop(st_t* st, int* val, void** data)
 	return;
 }
 
+void st_top(st_t* st, int* val, void **data)
+{
+	if(st && st->head) {
+		if ((st->type == VAL) && val) {
+			*val = st->head->val;
+		} else if ((st->type == VOID_DATA) && data) {
+			*data = st->head->data;
+		}
+	}
+	return;
+}
 
 int is_st_empty(st_t* st)
 {

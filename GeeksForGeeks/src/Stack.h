@@ -30,5 +30,6 @@ void st_push(st_t *st, int val, void *data);
 void st_pop(st_t* st, int* val, void** data);
 int is_st_empty(st_t* st);
 void st_destroy(st_t *st);
+void st_top(st_t* st, int* val, void **data);
 
 #endif /* STACK_H_ */
