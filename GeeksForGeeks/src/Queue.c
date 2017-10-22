@@ -9,6 +9,17 @@
 
 
 
+/** This is a basic Queue implementation that can store void *data or integer value.
+ *  On create its an empty shell.
+ *  Each enq allocates a new q node and adds the passed in value to it.
+ *
+ *  Each deq will return the stored void*data or val based on the passed in args.
+ *  Each deq will in addition delete the q node that was used to store the content.
+ *
+ *  Destroy is q destroy only. Its upto the caller to destroy void*data contents.
+ */
+
+
 q_t* q_create(void)
 {
 	q_t *new_q;
@@ -33,9 +44,9 @@ void q_destroy(q_t *q)
 	}
 }
 
-int en_q(q_t* q, void* data)
+int en_q(q_t* q, void* data, int val)
 {
-	if (q && data) {
+	if (q) {
 		q_node_t *new_q_node = (q_node_t*)malloc(sizeof(q_node_t));
 
 		if (!new_q_node) {
@@ -49,7 +60,12 @@ int en_q(q_t* q, void* data)
 			q->head = q->tail = new_q_node;
 		}
 
-		new_q_node->data = data;
+		if (data) {
+			new_q_node->data = data;
+		} else {
+			new_q_node->val = val;
+		}
+
 		new_q_node->next = NULL;
 		q->count++;
 		return Q_OK;
@@ -60,22 +76,32 @@ error:
 }
 
 
-int de_q(q_t* q, void **data)
+int de_q(q_t* q, void **data, int *val)
 {
-	if (q && *data) {
+	if (q && (data || val)) {
 		q_node_t *del_node = q->head;
 
 		if (is_q_empty(q)) {
-			*data = NULL;
+			if (data) {
+				*data = NULL;
+			} else {
+				*val = 0;
+			}
 			goto error;
 		}
 
-		*data = q->head->data;
+		if (data) {
+			*data = q->head->data;
+		} else {
+			*val = q->head->val;
+		}
+
 		if (q->head == q->tail) {
 			q->head = q->tail = NULL;
 		} else {
 			q->head = q->head->next;
 		}
+
 		q->count--;
 		free(del_node);
 		return Q_OK;

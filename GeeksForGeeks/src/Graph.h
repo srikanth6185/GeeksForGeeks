@@ -8,6 +8,9 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
+#define DIRECTIONAL 1
+#define NON_DIRECTIONAL 2
+
 typedef struct adj_node_s {
 	int dest;
 	struct adj_node_s *next;
@@ -16,6 +19,7 @@ typedef struct adj_node_s {
 /*Per vertex data and adj list.*/
 typedef struct adj_list_s {
 	void *data;
+	int visited;
 	adj_node_t *head;
 }adj_list_t;
 
@@ -26,5 +30,17 @@ typedef struct graph_s {
 	                       which gives the adjaceny of each
 	                       vertex.*/
 } graph_t;
+
+
+graph_t *create_graph(int vertices);
+void destroy_graph(graph_t *graph);
+int add_vertex(graph_t* graph, int v);
+int add_edge(graph_t *graph, int v, int u, int bidirectional);
+void print_graph(graph_t *graph);
+void bfs_traversal_graph(graph_t* graph, int v);
+
+
+
+
 
 #endif /* GRAPH_H_ */

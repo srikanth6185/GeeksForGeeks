@@ -14,7 +14,7 @@
 #include "vector_util.h"
 #include "BinaryTree.h"
 #include "Queue.h"
-
+#include "Graph.h"
 
 void test_ll(void)
 {
@@ -520,12 +520,12 @@ void test_q_basic(void)
     q = q_create();
 
     for (i = 0; i < 10; i++) {
-        en_q(q, &arr[i]);
+        en_q(q, &arr[i], 0);
     }
 
     for(;!is_q_empty(q);) {
         int *val;
-        de_q(q, (void**)&val);
+        de_q(q, (void**)&val, NULL);
         if (val) {
             printf("%d\n", *val);
         } else {
@@ -817,12 +817,60 @@ void test_bt_all(void)
 	//test_liss();
 }
 
+graph_t *test_create_graph(int v)
+{
+	graph_t *graph;
+
+	graph = create_graph(v);
+
+    return graph;
+}
+void test_gr_create_print(void)
+{
+	graph_t *graph = test_create_graph(5);
+
+	add_edge(graph, 0, 1, NON_DIRECTIONAL);
+    add_edge(graph, 0, 4, NON_DIRECTIONAL);
+    add_edge(graph, 1, 2, NON_DIRECTIONAL);
+    add_edge(graph, 1, 3, NON_DIRECTIONAL);
+    add_edge(graph, 1, 4, NON_DIRECTIONAL);
+    add_edge(graph, 2, 3, NON_DIRECTIONAL);
+    add_edge(graph, 3, 4, NON_DIRECTIONAL);
+
+	print_graph(graph);
+    destroy_graph(graph);
+}
+
+void test_gr_bfs(void)
+{
+	graph_t *graph = test_create_graph(4);
+
+	add_edge(graph, 0, 1, DIRECTIONAL);
+    add_edge(graph, 0, 2, DIRECTIONAL);
+    add_edge(graph, 1, 2, DIRECTIONAL);
+    add_edge(graph, 2, 0, DIRECTIONAL);
+    add_edge(graph, 2, 3, DIRECTIONAL);
+    add_edge(graph, 3, 3, DIRECTIONAL);
+
+	print_graph(graph);
+
+	bfs_traversal_graph(graph, 2);
+    destroy_graph(graph);
+
+}
+
+void test_graph_all(void)
+{
+	//test_gr_create_print();
+	test_gr_bfs();
+}
 
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll_all();
     //test_q_all();
-    test_bt_all();
+    //test_bt_all();
+	test_graph_all();
     printf("ALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

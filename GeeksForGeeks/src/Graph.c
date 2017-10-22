@@ -8,7 +8,7 @@
 #include<stdio.h>
 #include<string.h>
 #include "Graph.h"
-
+#include "Queue.h"
 
 
 graph_t *create_graph(int vertices)
@@ -40,6 +40,29 @@ graph_t *create_graph(int vertices)
 
 void destroy_graph(graph_t *graph)
 {
+	if (!graph) {
+		return;
+	}
+
+	/*Free the adj lists*/
+	if (graph->vertices > 0) {
+		int i;
+		for(i = 0; i < graph->vertices; i++) {
+			adj_node_t *curr = graph->adj_arr[i].head, *del;
+			while(curr) {
+				del = curr;
+				curr = curr->next;
+				free(del);
+			}
+		}
+
+		free(graph->adj_arr);
+	}
+
+	/*Free main data structure*/
+	free(graph);
+
+	return;
 
 }
 
@@ -48,7 +71,7 @@ int add_vertex(graph_t* graph, int v)
 	return 0;
 }
 
-int add_edge(graph_t *graph, int v, int u)
+int add_edge(graph_t *graph, int v, int u, int bidirectional)
 {
 	adj_node_t* new_edge[2];
 
@@ -58,7 +81,9 @@ int add_edge(graph_t *graph, int v, int u)
 	}
 
 	new_edge[0] = (adj_node_t*)malloc(sizeof(adj_node_t));
-	new_edge[1] = (adj_node_t*)malloc(sizeof(adj_node_t));
+	if (NON_DIRECTIONAL == bidirectional) {
+		new_edge[1] = (adj_node_t*)malloc(sizeof(adj_node_t));
+	}
 
 	if (!new_edge[0] || !new_edge[1]) {
 		if (new_edge[0]) {
@@ -75,10 +100,86 @@ int add_edge(graph_t *graph, int v, int u)
 	new_edge[0]->next = graph->adj_arr[v].head;
 	graph->adj_arr[v].head = new_edge[0];
 
-	new_edge[1]->dest = u;
-	new_edge[1]->next = graph->adj_arr[v].head;
-	graph->adj_arr[v].head = new_edge[1];
-
+	if (NON_DIRECTIONAL == bidirectional) {
+		new_edge[1]->dest = v;
+		new_edge[1]->next = graph->adj_arr[u].head;
+		graph->adj_arr[u].head = new_edge[1];
+	}
 	return 1;
 
+}
+
+
+void print_graph(graph_t *graph)
+{
+	if (!graph) {
+		return;
+	}
+
+	if (graph->vertices) {
+		int i;
+
+		printf("No of vertices: %d\n", graph->vertices);
+		for(i = 0; i < graph->vertices; i++) {
+			adj_node_t *curr = graph->adj_arr[i].head;
+
+			printf("Adj list for vertex: %d\n", i);
+
+			while(curr) {
+				printf("%d --> %d\n", i, curr->dest);
+				curr = curr->next;
+			}
+		}
+	}
+
+	return;
+}
+
+void reset_visited(graph_t *g)
+{
+	int i = g->vertices - 1;
+
+	for(;i >= 0; i--) {
+		g->adj_arr[i].visited = 0;
+	}
+	return;
+}
+
+void bfs_traversal_graph(graph_t* graph, int v)
+{
+	q_t* q;
+	adj_node_t* adj;
+
+	if (!graph || graph->vertices <= 0 ||
+	    (v < 0) || (v > graph->vertices)) {
+		printf("%s: BAD INPUT\n", __FUNCTION__);
+		return;
+	}
+
+	reset_visited(graph);
+	q = q_create();
+
+	graph->adj_arr[v].visited = 1;
+	en_q(q, NULL, v);
+
+	while(!is_q_empty(q)) {
+		de_q(q, NULL, &v);
+
+		printf(" %d", v);
+
+		adj = graph->adj_arr[v].head;
+		while (adj) {
+			if (!graph->adj_arr[adj->dest].visited) {
+				en_q(q, NULL, adj->dest);
+				graph->adj_arr[adj->dest].visited = 1;
+			}
+			adj = adj->next;
+		}
+	}
+
+	printf("\n");
+
+	q_destroy(q);
+
+	return;
 }

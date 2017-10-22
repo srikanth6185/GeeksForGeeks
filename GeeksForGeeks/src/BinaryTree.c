@@ -79,15 +79,15 @@ void bt_print_level(bt_node_t *root)
         printf("Null Tree\n");
     }
     q = q_create();
-    en_q(q, root);
+    en_q(q, root, 0);
 
     while(!is_q_empty(q)) {
-        de_q(q, (void**)&curr);
+        de_q(q, (void**)&curr, NULL);
         if (curr->left) {
-            en_q(q, curr->left);
+            en_q(q, curr->left, 0);
         }
         if (curr->right) {
-            en_q(q, curr->right);
+            en_q(q, curr->right, 0);
         }
         printf("%d ", curr->val);
     }

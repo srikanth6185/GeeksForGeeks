@@ -25,8 +25,8 @@ typedef struct q_s {
 
 q_t* q_create(void);
 void q_destroy(q_t *q);
-int en_q(q_t* q, void* data);
-int de_q(q_t* q, void **data);
+int en_q(q_t* q, void* data, int val);
+int de_q(q_t* q, void **data, int *val);
 int is_q_empty(q_t* q);
 
 
