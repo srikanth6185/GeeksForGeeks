@@ -268,15 +268,15 @@ void topological_sort_graph(graph_t* graph)
     reset_visited(graph);
 
     for(idx = 0; idx < graph->vertices; idx++) {
-            if (!graph->adj_arr[idx].visited) {
-                topological_sort_util(graph, idx, st);
-            }
+    		if (!graph->adj_arr[idx].visited) {
+    			topological_sort_util(graph, idx, st);
+        }
     }
 
     printf("Topological ordering: ");
     while (!is_st_empty(st)) {
         st_pop(st, &vertex, NULL);
-            printf("%d ", vertex);
+        printf("%d ", vertex);
     }
 
     st_destroy(st);
@@ -302,29 +302,29 @@ void lonest_path_directed_acyclic_graph(graph_t *graph, int src)
 
     /*Prep the stack with DFS walk of the nodes.*/
     for(idx = 0; idx < graph->vertices; idx++) {
-            if (!graph->adj_arr[idx].visited) {
-                topological_sort_util(graph, idx, st);
-            }
+		if (!graph->adj_arr[idx].visited) {
+			topological_sort_util(graph, idx, st);
+		}
     }
 
     while (!is_st_empty(st)) {
-            adj_node_t *adj;
-            st_pop(st, &vertex, NULL);
-            adj = graph->adj_arr[vertex].head;
+		adj_node_t *adj;
+		st_pop(st, &vertex, NULL);
+		adj = graph->adj_arr[vertex].head;
 
-            if (graph->adj_arr[vertex].dist != NEG_INFINITY) {
-                /*Walk each adjacent vertex and update the distance if its less.*/
-                while (adj) {
-                    if (graph->adj_arr[adj->dest].dist < (graph->adj_arr[vertex].dist + adj->weight)) {
-                        graph->adj_arr[adj->dest].dist = graph->adj_arr[vertex].dist + adj->weight;
-                    }
-                    adj = adj->next;
-                }
-            }
+		if (graph->adj_arr[vertex].dist != NEG_INFINITY) {
+			/*Walk each adjacent vertex and update the distance if its less.*/
+			while (adj) {
+				if (graph->adj_arr[adj->dest].dist < (graph->adj_arr[vertex].dist + adj->weight)) {
+					graph->adj_arr[adj->dest].dist = graph->adj_arr[vertex].dist + adj->weight;
+				}
+				adj = adj->next;
+			}
+		}
     }
 
     for(idx = 0; idx < graph->vertices; idx++) {
-            printf("vertex: %d dist: %d\n", idx, graph->adj_arr[idx].dist);
+    		printf("vertex: %d dist: %d\n", idx, graph->adj_arr[idx].dist);
     }
 
     st_destroy(st);
