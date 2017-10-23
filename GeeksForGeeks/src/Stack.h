@@ -12,16 +12,16 @@
 #define VOID_DATA 2
 
 typedef struct st_node_s {
-	void *data;
-	int val;
-	struct st_node_s *next;
+    void *data;
+    int val;
+    struct st_node_s *next;
 } st_node_t;
 
 
 typedef struct st_s {
-	st_node_t *head;
-	int count;
-	int type;
+    st_node_t *head;
+    int count;
+    int type;
 } st_t;
 
 

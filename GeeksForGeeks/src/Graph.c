@@ -71,7 +71,7 @@ int add_vertex(graph_t* graph, int v)
     return 0;
 }
 
-int add_edge(graph_t *graph, int v, int u, int bidirectional)
+int add_edge(graph_t *graph, int v, int u, int bidirectional, int weight)
 {
     adj_node_t* new_edge[2];
 
@@ -97,11 +97,14 @@ int add_edge(graph_t *graph, int v, int u, int bidirectional)
     }
 
     new_edge[0]->dest = u;
+    new_edge[0]->weight = weight;
     new_edge[0]->next = graph->adj_arr[v].head;
     graph->adj_arr[v].head = new_edge[0];
 
+
     if (NON_DIRECTIONAL == bidirectional) {
         new_edge[1]->dest = v;
+        new_edge[1]->weight = weight;
         new_edge[1]->next = graph->adj_arr[u].head;
         graph->adj_arr[u].head = new_edge[1];
     }
@@ -141,6 +144,7 @@ void reset_visited(graph_t *g)
 
     for(;i >= 0; i--) {
         g->adj_arr[i].visited = 0;
+        g->adj_arr[i].dist = NEG_INFINITY;
     }
     return;
 }
@@ -190,12 +194,12 @@ void bfs_traversal_graph(graph_t* graph, int v)
  * */
 void dfs_traversal_graph(graph_t *graph, int v)
 {
-	st_t* st;
-	adj_node_t* adj;
+    st_t* st;
+    adj_node_t* adj;
 
-	printf("\n%s: START\n", __FUNCTION__);
+    printf("\n%s: START\n", __FUNCTION__);
 
-	if (!graph || graph->vertices <= 0 ||
+    if (!graph || graph->vertices <= 0 ||
         (v < 0) || (v > graph->vertices)) {
         printf("%s: BAD INPUT\n", __FUNCTION__);
         return;
@@ -206,26 +210,26 @@ void dfs_traversal_graph(graph_t *graph, int v)
     st_push(st, v, NULL);
 
     while(!is_st_empty(st)) {
-    	st_top(st, &v, NULL);
-    	//Vertex not visited so visit.
-    	if(!graph->adj_arr[v].visited) {
-    		graph->adj_arr[v].visited = 1;
-    		printf("%d ", v);
-    	}
+        st_top(st, &v, NULL);
+        //Vertex not visited so visit.
+        if(!graph->adj_arr[v].visited) {
+            graph->adj_arr[v].visited = 1;
+            printf("%d ", v);
+        }
 
-    	adj = graph->adj_arr[v].head;
-    	while (adj) {
-    		if (!graph->adj_arr[adj->dest].visited) {
-    			st_push(st,adj->dest, NULL);
-    			break;
-    		}
-    		adj = adj->next;
-    	}
-    	//All adj nodes visited
-    	//Remove it from the stack
-    	if (!adj) {
-    		st_pop(st, &v, NULL);
-    	}
+        adj = graph->adj_arr[v].head;
+        while (adj) {
+            if (!graph->adj_arr[adj->dest].visited) {
+                st_push(st,adj->dest, NULL);
+                break;
+            }
+            adj = adj->next;
+        }
+        //All adj nodes visited
+        //Remove it from the stack
+        if (!adj) {
+            st_pop(st, &v, NULL);
+        }
     }
 
     printf("\n");
@@ -237,41 +241,90 @@ void dfs_traversal_graph(graph_t *graph, int v)
  * */
 void topological_sort_util(graph_t* graph, int v, st_t *st)
 {
-	adj_node_t *adj = graph->adj_arr[v].head;
-	graph->adj_arr[v].visited = 1;
+    adj_node_t *adj = graph->adj_arr[v].head;
+    graph->adj_arr[v].visited = 1;
 
-	while(adj) {
-		if (!graph->adj_arr[adj->dest].visited) {
-			topological_sort_util(graph, adj->dest, st);
-		}
-		adj = adj->next;
-	}
+    while(adj) {
+        if (!graph->adj_arr[adj->dest].visited) {
+            topological_sort_util(graph, adj->dest, st);
+        }
+        adj = adj->next;
+    }
 
-	st_push(st, v, NULL);
+    st_push(st, v, NULL);
 }
 
 void topological_sort_graph(graph_t* graph)
 {
-	st_t *st;
-	int idx, vertex;
+    st_t *st;
+    int idx, vertex;
 
-	if (!graph) {
-		printf("%s: BAD INPUT\n", __FUNCTION__);
-		return;
-	}
-	st = st_create(VAL);
+    if (!graph) {
+        printf("%s: BAD INPUT\n", __FUNCTION__);
+        return;
+    }
+
+    st = st_create(VAL);
     reset_visited(graph);
 
     for(idx = 0; idx < graph->vertices; idx++) {
-    		if (!graph->adj_arr[idx].visited) {
-    			topological_sort_util(graph, idx, st);
-    		}
+            if (!graph->adj_arr[idx].visited) {
+                topological_sort_util(graph, idx, st);
+            }
     }
 
     printf("Topological ordering: ");
     while (!is_st_empty(st)) {
-		st_pop(st, &vertex, NULL);
-    		printf("%d ", vertex);
+        st_pop(st, &vertex, NULL);
+            printf("%d ", vertex);
+    }
+
+    st_destroy(st);
+    return;
+}
+
+void lonest_path_directed_acyclic_graph(graph_t *graph, int src)
+{
+    st_t *st;
+    int idx, vertex;
+
+    if (!graph || (src < 0) || (src > graph->vertices)) {
+        printf("%s: BAD INPUT\n", __FUNCTION__);
+        return;
+    }
+
+    st = st_create(VAL);
+    reset_visited(graph);
+
+    /* Set the distance of the src to
+     * zero.*/
+    graph->adj_arr[src].dist = 0;
+
+    /*Prep the stack with DFS walk of the nodes.*/
+    for(idx = 0; idx < graph->vertices; idx++) {
+            if (!graph->adj_arr[idx].visited) {
+                topological_sort_util(graph, idx, st);
+            }
+    }
+
+    while (!is_st_empty(st)) {
+            adj_node_t *adj;
+            st_pop(st, &vertex, NULL);
+            adj = graph->adj_arr[vertex].head;
+
+            if (graph->adj_arr[vertex].dist != NEG_INFINITY) {
+                /*Walk each adjacent vertex and update the distance if its less.*/
+                while (adj) {
+                    if (graph->adj_arr[adj->dest].dist < (graph->adj_arr[vertex].dist + adj->weight)) {
+                        graph->adj_arr[adj->dest].dist = graph->adj_arr[vertex].dist + adj->weight;
+                    }
+                    adj = adj->next;
+                }
+            }
+    }
+
+    for(idx = 0; idx < graph->vertices; idx++) {
+            printf("vertex: %d dist: %d\n", idx, graph->adj_arr[idx].dist);
     }
 
     st_destroy(st);

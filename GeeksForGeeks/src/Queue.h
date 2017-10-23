@@ -12,15 +12,15 @@
 #define Q_ERR -1
 
 typedef struct q_node_s {
-	void *data;
-	int val;
-	struct q_node_s *next;
+    void *data;
+    int val;
+    struct q_node_s *next;
 }q_node_t;
 
 typedef struct q_s {
-	q_node_t *head;
-	q_node_t *tail;
-	int count;
+    q_node_t *head;
+    q_node_t *tail;
+    int count;
 }q_t;
 
 q_t* q_create(void);

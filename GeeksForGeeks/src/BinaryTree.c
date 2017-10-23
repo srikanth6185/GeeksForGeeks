@@ -707,206 +707,206 @@ bt_node_t* buildSpecialTree1(int *node, char *nodeT, int *idx, int max)
 
 int isCompleteTree(bt_node_t* root)
 {
-	if (!root) {
-		return 1;
-	}
+    if (!root) {
+        return 1;
+    }
 
-	if (!root->left) {
-		if (!root->right ) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+    if (!root->left) {
+        if (!root->right ) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
-	return (isCompleteTree(root->left) && isCompleteTree(root->right));
+    return (isCompleteTree(root->left) && isCompleteTree(root->right));
 }
 
 void bt_print_bndry_nodes_left(bt_node_t* root)
 {
-	if (!root) {
-		return;
-	}
+    if (!root) {
+        return;
+    }
 
-	if (root->left) {
-		printf("%d ", root->val);
-		bt_print_bndry_nodes_left(root->left);
-	} else if (root->right) {
-		printf("%d ", root->val);
-		bt_print_bndry_nodes_left(root->right);
-	}
-	return;
+    if (root->left) {
+        printf("%d ", root->val);
+        bt_print_bndry_nodes_left(root->left);
+    } else if (root->right) {
+        printf("%d ", root->val);
+        bt_print_bndry_nodes_left(root->right);
+    }
+    return;
 }
 
 void bt_print_bndry_nodes_leaves(bt_node_t *root)
 {
-	if (!root) {
-		return;
-	}
+    if (!root) {
+        return;
+    }
 
-	if (!root->left && !root->right) {
-		printf("%d ", root->val);
-		return;
-	}
+    if (!root->left && !root->right) {
+        printf("%d ", root->val);
+        return;
+    }
 
-	bt_print_bndry_nodes_leaves(root->left);
-	bt_print_bndry_nodes_leaves(root->right);
+    bt_print_bndry_nodes_leaves(root->left);
+    bt_print_bndry_nodes_leaves(root->right);
 
 }
 
 void bt_print_bndry_nodes_right(bt_node_t *root)
 {
-	if (!root) {
-		return;
-	}
+    if (!root) {
+        return;
+    }
 
-	if (root->right) {
-		bt_print_bndry_nodes_right(root->right);
-		printf("%d ", root->val);
-	} else if (root->left) {
-		bt_print_bndry_nodes_right(root->left);
-		printf("%d ", root->val);
-	}
+    if (root->right) {
+        bt_print_bndry_nodes_right(root->right);
+        printf("%d ", root->val);
+    } else if (root->left) {
+        bt_print_bndry_nodes_right(root->left);
+        printf("%d ", root->val);
+    }
 }
 
 void bt_print_bndry_nodes(bt_node_t *root)
 {
-	/*Print the left boundary including the root*/
-	bt_print_bndry_nodes_left(root);
-	/*Print the leaves*/
-	bt_print_bndry_nodes_leaves(root->left);
-	bt_print_bndry_nodes_leaves(root->right);
+    /*Print the left boundary including the root*/
+    bt_print_bndry_nodes_left(root);
+    /*Print the leaves*/
+    bt_print_bndry_nodes_leaves(root->left);
+    bt_print_bndry_nodes_leaves(root->right);
 
-	/*Print the right boundary excluding the  */
-	bt_print_bndry_nodes_right(root->right);
+    /*Print the right boundary excluding the  */
+    bt_print_bndry_nodes_right(root->right);
 }
 
 
 /*Iterative preorder traversal using stack*/
 void bt_print_preorder_iterative(bt_node_t *root)
 {
-	bt_node_t *curr;
-	st_t *st;
+    bt_node_t *curr;
+    st_t *st;
 
-	if (!root) {
-		printf("Empty tree\n");
-		return;
-	}
+    if (!root) {
+        printf("Empty tree\n");
+        return;
+    }
 
-	st = st_create(VOID_DATA);
-	st_push(st, 0, root);
+    st = st_create(VOID_DATA);
+    st_push(st, 0, root);
 
-	while (!is_st_empty(st)) {
-		st_pop(st,NULL, (void**)&curr);
-		printf("%d\n", curr->val);
+    while (!is_st_empty(st)) {
+        st_pop(st,NULL, (void**)&curr);
+        printf("%d\n", curr->val);
 
-		if (curr->right) {
-			st_push(st, 0, curr->right);
-		}
+        if (curr->right) {
+            st_push(st, 0, curr->right);
+        }
 
-		if (curr->left) {
-			st_push(st, 0, curr->left);
-		}
-	}
+        if (curr->left) {
+            st_push(st, 0, curr->left);
+        }
+    }
 
-	st_destroy(st);
+    st_destroy(st);
 }
 
 /**
  * Algorithm
  * 1. If node has no left child, print and move to right child.
  * 2. If node has left child :
- * 	  Find predecessor for this node (left and right till leaf)
- * 	  a. If current node is encountered while finding the predecessor then
- * 	     reset the right child of the predecessor and move to right.
- * 	  b. Print node and set the right child of the predecossor to the current
- * 	     node and move left.
+ *       Find predecessor for this node (left and right till leaf)
+ *       a. If current node is encountered while finding the predecessor then
+ *          reset the right child of the predecessor and move to right.
+ *       b. Print node and set the right child of the predecossor to the current
+ *          node and move left.
  *
  */
 void bt_print_preorder_morris(bt_node_t *root)
 {
-	if (!root) {
-		return;
-	}
+    if (!root) {
+        return;
+    }
 
-	while (root) {
-		if (!root->left) {
-			printf ("%d ", root->val);
-			root = root->right;
-		} else {
-			bt_node_t *curr = root->left;
-			while (curr->right && (curr->right != root)) {
-				curr = curr->right;
-			}
+    while (root) {
+        if (!root->left) {
+            printf ("%d ", root->val);
+            root = root->right;
+        } else {
+            bt_node_t *curr = root->left;
+            while (curr->right && (curr->right != root)) {
+                curr = curr->right;
+            }
 
-			if (curr->right) {
-				curr->right = NULL;
-				root = root->right;
-			} else {
-				printf("%d ", root->val);
-				curr->right = root;
-				root = root->left;
-			}
-		}
-	}
-	printf("\n");
-	return;
+            if (curr->right) {
+                curr->right = NULL;
+                root = root->right;
+            } else {
+                printf("%d ", root->val);
+                curr->right = root;
+                root = root->left;
+            }
+        }
+    }
+    printf("\n");
+    return;
 }
 
 /* DS: Use 2 stacks
  * Algorithm:
  * 1. push root to stack1
  * 2. while stack1 is not empty
- * 	  - pop top
- * 	  - push right child and then left child into stack1
- * 	  - push node to stack2
+ *       - pop top
+ *       - push right child and then left child into stack1
+ *       - push node to stack2
  * 3. Print stack2 elements.
  * */
 void bt_print_post_order_iterative(bt_node_t *bt)
 {
-	st_t *s1, *s2;
-	bt_node_t *curr;
+    st_t *s1, *s2;
+    bt_node_t *curr;
 
-	if (!bt) {
-		return;
-	}
+    if (!bt) {
+        return;
+    }
 
-	s1 = st_create(VOID_DATA);
-	s2 = st_create(VOID_DATA);
+    s1 = st_create(VOID_DATA);
+    s2 = st_create(VOID_DATA);
 
-	st_push(s1, 0, bt);
+    st_push(s1, 0, bt);
 
-	while (!is_st_empty(s1)) {
-		st_pop(s1, NULL, (void**)&curr);
+    while (!is_st_empty(s1)) {
+        st_pop(s1, NULL, (void**)&curr);
 
-		//printf("popping %d from s1\n", curr->val);
+        //printf("popping %d from s1\n", curr->val);
 
-		if (curr->left) {
-			//printf("pushing %d to s1\n", curr->left->val);
-			st_push(s1, 0, curr->left);
-		}
+        if (curr->left) {
+            //printf("pushing %d to s1\n", curr->left->val);
+            st_push(s1, 0, curr->left);
+        }
 
-		if (curr->right) {
-			//printf("pushing %d to s1\n", curr->right->val);
-			st_push(s1, 0, curr->right);
-		}
+        if (curr->right) {
+            //printf("pushing %d to s1\n", curr->right->val);
+            st_push(s1, 0, curr->right);
+        }
 
-		//printf("pushing %d to s2\n", curr->val);
-		st_push(s2, 0, curr);
-	}
+        //printf("pushing %d to s2\n", curr->val);
+        st_push(s2, 0, curr);
+    }
 
 
-	while(!is_st_empty(s2)) {
-		st_pop(s2, NULL, (void**)&curr);
-		printf("%d ", curr->val);
-	}
+    while(!is_st_empty(s2)) {
+        st_pop(s2, NULL, (void**)&curr);
+        printf("%d ", curr->val);
+    }
 
-	printf("\n");
+    printf("\n");
 
-	st_destroy(s1);
-	st_destroy(s2);
+    st_destroy(s1);
+    st_destroy(s2);
 
-	return;
+    return;
 }
 
 /**
@@ -916,32 +916,32 @@ void bt_print_post_order_iterative(bt_node_t *bt)
  **/
 int LISS(bt_node_t *root)
 {
-	int liss_children, liss_gchildren = 1;
+    int liss_children, liss_gchildren = 1;
 
-	if (!root) {
-		return 0;
-	}
+    if (!root) {
+        return 0;
+    }
 
-	if (root->liss) {
-		return root->liss;
-	} else if (!root->left && !root->right) {
-		root->liss = 1;
-		return root->liss;
-	}
+    if (root->liss) {
+        return root->liss;
+    } else if (!root->left && !root->right) {
+        root->liss = 1;
+        return root->liss;
+    }
 
-	liss_children = LISS(root->left) + LISS(root->right);
+    liss_children = LISS(root->left) + LISS(root->right);
 
-	if (root->left) {
-		liss_gchildren += LISS(root->left->left) + LISS(root->left->right);
-	}
+    if (root->left) {
+        liss_gchildren += LISS(root->left->left) + LISS(root->left->right);
+    }
 
-	if (root->right) {
-		liss_gchildren += LISS(root->right->left) + LISS(root->right->right);
-	}
+    if (root->right) {
+        liss_gchildren += LISS(root->right->left) + LISS(root->right->right);
+    }
 
-	root->liss = MAX(liss_children, liss_gchildren);
+    root->liss = MAX(liss_children, liss_gchildren);
 
-	return root->liss;
+    return root->liss;
 }
 
 

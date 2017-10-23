@@ -26,11 +26,11 @@
 
 /*Will get the index of the first bit set.
  * Return:
- * 	0 for word = 0
- * 	0 for word = 1
- * 	1 for word = 2
- * 	3 for word = 8
- * 	4 for word = 16*/
+ *     0 for word = 0
+ *     0 for word = 1
+ *     1 for word = 2
+ *     3 for word = 8
+ *     4 for word = 16*/
 static inline unsigned long vector_ffs(unsigned long word)
 {
     __asm__("bsf %1,%0"

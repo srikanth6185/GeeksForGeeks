@@ -718,7 +718,7 @@ void testConnectLevels(void)
     }
 
     connectLevelNodesFaster(t1);
-	connectLevelNodes(t1);
+    connectLevelNodes(t1);
     bt_destroy(&t1);
 }
 
@@ -743,11 +743,11 @@ void test_bt_specialTreeConstruct(void)
     //t1 = buildSpecialTreeIn(arr, 0, 7);
 
     char arrT[10] = {'N','N','L','L','N','L','L'};
-	int arr[10] = {10,30,20,5,15,22,36}, i = 0;
+    int arr[10] = {10,30,20,5,15,22,36}, i = 0;
 
     t1 = buildSpecialTree1(arr, arrT, &i, 7);
 
-	bt_print_level(t1);
+    bt_print_level(t1);
     bt_destroy(&t1);
 
 }
@@ -755,48 +755,48 @@ void test_bt_specialTreeConstruct(void)
 void test_completeTree(void)
 {
     bt_node_t *t1 = NULL;
-	int arr[10] = {5,6}, i = 0;
+    int arr[10] = {5,6}, i = 0;
 
     for (i = 0; i < 2; i++) {
         bt_insert(&t1, arr[i]);
     }
 
-	bt_print_level(t1);
+    bt_print_level(t1);
 
-	printf("Tree is %s\n", isCompleteTree(t1) ? "complete": "incomplete");
+    printf("Tree is %s\n", isCompleteTree(t1) ? "complete": "incomplete");
 
-	bt_destroy(&t1);
+    bt_destroy(&t1);
 
 }
 
 void test_printBoundary(void)
 {
     bt_node_t *t1 = NULL;
-	int arr[10] = {8,4,2,6,5,7,9,10}, i = 0;
+    int arr[10] = {8,4,2,6,5,7,9,10}, i = 0;
 
     for (i = 0; i < 8; i++) {
         bt_insert(&t1, arr[i]);
     }
 
-	bt_print_level(t1);
-	bt_print_bndry_nodes(t1);
-	bt_destroy(&t1);
+    bt_print_level(t1);
+    bt_print_bndry_nodes(t1);
+    bt_destroy(&t1);
 }
 
 void test_liss(void)
 {
     bt_node_t *t1 = NULL;
-	int arr[10] = {70,80,90,20,10,50,30,60}, i = 0;
+    int arr[10] = {70,80,90,20,10,50,30,60}, i = 0;
 
     for (i = 0; i < 8; i++) {
         bt_insert(&t1, arr[i]);
     }
 
-	bt_print_level(t1);
+    bt_print_level(t1);
 
-	printf("LISS = %d \n", LISS(t1));
+    printf("LISS = %d \n", LISS(t1));
 
-	bt_destroy(&t1);
+    bt_destroy(&t1);
 
 }
 
@@ -810,95 +810,117 @@ void test_bt_all(void)
     //test_bt_diameter();
     //test_bt_subtree();
     //testConnectLevels();
-	//testMaxSumPath();
-	//test_bt_specialTreeConstruct();
-	//test_completeTree();
-	//test_printBoundary();
-	//test_liss();
+    //testMaxSumPath();
+    //test_bt_specialTreeConstruct();
+    //test_completeTree();
+    //test_printBoundary();
+    //test_liss();
 }
 
 graph_t *test_create_graph(int v)
 {
-	graph_t *graph;
+    graph_t *graph;
 
-	graph = create_graph(v);
+    graph = create_graph(v);
 
     return graph;
 }
 void test_gr_create_print(void)
 {
-	graph_t *graph = test_create_graph(5);
+    graph_t *graph = test_create_graph(5);
 
-	add_edge(graph, 0, 1, NON_DIRECTIONAL);
-    add_edge(graph, 0, 4, NON_DIRECTIONAL);
-    add_edge(graph, 1, 2, NON_DIRECTIONAL);
-    add_edge(graph, 1, 3, NON_DIRECTIONAL);
-    add_edge(graph, 1, 4, NON_DIRECTIONAL);
-    add_edge(graph, 2, 3, NON_DIRECTIONAL);
-    add_edge(graph, 3, 4, NON_DIRECTIONAL);
+    add_edge(graph, 0, 1, NON_DIRECTIONAL, 0);
+    add_edge(graph, 0, 4, NON_DIRECTIONAL, 0);
+    add_edge(graph, 1, 2, NON_DIRECTIONAL, 0);
+    add_edge(graph, 1, 3, NON_DIRECTIONAL, 0);
+    add_edge(graph, 1, 4, NON_DIRECTIONAL, 0);
+    add_edge(graph, 2, 3, NON_DIRECTIONAL, 0);
+    add_edge(graph, 3, 4, NON_DIRECTIONAL, 0);
 
-	print_graph(graph);
+    print_graph(graph);
     destroy_graph(graph);
 }
 
 void test_gr_bfs(void)
 {
-	graph_t *graph = test_create_graph(4);
+    graph_t *graph = test_create_graph(4);
 
-	add_edge(graph, 0, 1, DIRECTIONAL);
-    add_edge(graph, 0, 2, DIRECTIONAL);
-    add_edge(graph, 1, 2, DIRECTIONAL);
-    add_edge(graph, 2, 0, DIRECTIONAL);
-    add_edge(graph, 2, 3, DIRECTIONAL);
-    add_edge(graph, 3, 3, DIRECTIONAL);
+    add_edge(graph, 0, 1, DIRECTIONAL, 0);
+    add_edge(graph, 0, 2, DIRECTIONAL, 0);
+    add_edge(graph, 1, 2, DIRECTIONAL, 0);
+    add_edge(graph, 2, 0, DIRECTIONAL, 0);
+    add_edge(graph, 2, 3, DIRECTIONAL, 0);
+    add_edge(graph, 3, 3, DIRECTIONAL, 0);
 
-	print_graph(graph);
+    print_graph(graph);
 
-	bfs_traversal_graph(graph, 2);
+    bfs_traversal_graph(graph, 2);
     destroy_graph(graph);
 
 }
 
 void test_gr_dfs(void)
 {
-	graph_t *graph = test_create_graph(4);
+    graph_t *graph = test_create_graph(4);
 
-	add_edge(graph, 0, 1, DIRECTIONAL);
-    add_edge(graph, 0, 2, DIRECTIONAL);
-    add_edge(graph, 1, 2, DIRECTIONAL);
-    add_edge(graph, 2, 0, DIRECTIONAL);
-    add_edge(graph, 2, 3, DIRECTIONAL);
-    add_edge(graph, 3, 3, DIRECTIONAL);
+    add_edge(graph, 0, 1, DIRECTIONAL, 0);
+    add_edge(graph, 0, 2, DIRECTIONAL, 0);
+    add_edge(graph, 1, 2, DIRECTIONAL, 0);
+    add_edge(graph, 2, 0, DIRECTIONAL, 0);
+    add_edge(graph, 2, 3, DIRECTIONAL, 0);
+    add_edge(graph, 3, 3, DIRECTIONAL, 0);
 
-	print_graph(graph);
+    print_graph(graph);
 
-	dfs_traversal_graph(graph, 2);
+    dfs_traversal_graph(graph, 2);
     destroy_graph(graph);
 }
 
 void test_topological_sort(void)
 {
-	graph_t *graph = test_create_graph(6);
+    graph_t *graph = test_create_graph(6);
 
-	add_edge(graph, 5, 2, DIRECTIONAL);
-    add_edge(graph, 5, 0, DIRECTIONAL);
-    add_edge(graph, 4, 0, DIRECTIONAL);
-    add_edge(graph, 4, 1, DIRECTIONAL);
-    add_edge(graph, 2, 3, DIRECTIONAL);
-    add_edge(graph, 3, 1, DIRECTIONAL);
+    add_edge(graph, 5, 2, DIRECTIONAL, 0);
+    add_edge(graph, 5, 0, DIRECTIONAL, 0);
+    add_edge(graph, 4, 0, DIRECTIONAL, 0);
+    add_edge(graph, 4, 1, DIRECTIONAL, 0);
+    add_edge(graph, 2, 3, DIRECTIONAL, 0);
+    add_edge(graph, 3, 1, DIRECTIONAL, 0);
 
-	print_graph(graph);
+    print_graph(graph);
 
-	topological_sort_graph(graph);
+    topological_sort_graph(graph);
+    destroy_graph(graph);
+}
+
+void test_longest_path_acyclic_directed_graph(void)
+{
+    graph_t *graph = test_create_graph(6);
+
+    add_edge(graph, 0, 1, DIRECTIONAL, 5);
+    add_edge(graph, 0, 2, DIRECTIONAL, 3);
+    add_edge(graph, 1, 3, DIRECTIONAL, 6);
+    add_edge(graph, 1, 2, DIRECTIONAL, 2);
+    add_edge(graph, 2, 4, DIRECTIONAL, 4);
+    add_edge(graph, 2, 5, DIRECTIONAL, 2);
+    add_edge(graph, 2, 3, DIRECTIONAL, 7);
+    add_edge(graph, 3, 5, DIRECTIONAL, 1);
+    add_edge(graph, 3, 4, DIRECTIONAL, -1);
+    add_edge(graph, 4, 5, DIRECTIONAL, -2);
+
+    print_graph(graph);
+
+    lonest_path_directed_acyclic_graph(graph, 1);
     destroy_graph(graph);
 }
 
 void test_graph_all(void)
 {
-	//test_gr_create_print();
-	//test_gr_bfs();
-	//test_gr_dfs();
-	test_topological_sort();
+    //test_gr_create_print();
+    //test_gr_bfs();
+    //test_gr_dfs();
+    //test_topological_sort();
+    test_longest_path_acyclic_directed_graph();
 }
 
 /*Main program to test all the problems.*/
@@ -906,7 +928,7 @@ int main(void) {
     //test_ll_all();
     //test_q_all();
     //test_bt_all();
-	test_graph_all();
+    test_graph_all();
     printf("\nALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }
