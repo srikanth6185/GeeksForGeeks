@@ -26,6 +26,7 @@ typedef struct adj_list_s {
 	void *data;
 	int visited;
 	int dist;
+	int cnt;
 	adj_node_t *head;
 }adj_list_t;
 
@@ -48,5 +49,8 @@ void dfs_traversal_graph(graph_t *graph, int v);
 void topological_sort_graph(graph_t* graph);
 void lonest_path_directed_acyclic_graph(graph_t *graph, int src);
 int find_mother_vertex_in_graph(graph_t* graph, int* mother_vertex);
+void printKcoresOfGraph(graph_t *graph, int k);
+
+
 
 #endif /* GRAPH_H_ */

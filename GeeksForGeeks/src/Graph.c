@@ -100,6 +100,7 @@ int add_edge(graph_t *graph, int v, int u, int bidirectional, int weight)
     new_edge[0]->weight = weight;
     new_edge[0]->next = graph->adj_arr[v].head;
     graph->adj_arr[v].head = new_edge[0];
+    graph->adj_arr[v].cnt++;
 
 
     if (NON_DIRECTIONAL == bidirectional) {
@@ -107,6 +108,7 @@ int add_edge(graph_t *graph, int v, int u, int bidirectional, int weight)
         new_edge[1]->weight = weight;
         new_edge[1]->next = graph->adj_arr[u].head;
         graph->adj_arr[u].head = new_edge[1];
+        graph->adj_arr[u].cnt++;
     }
     return 1;
 
@@ -402,3 +404,77 @@ int find_mother_vertex_in_graph(graph_t* graph, int* mother_vertex)
 	return 1;
 
 }
+
+int DFSUtil_kcore(graph_t *graph, int v, int *pDegree, int k)
+{
+	adj_node_t *adj = graph->adj_arr[v].head;
+	graph->adj_arr[v].visited = 1;
+
+	while (adj) {
+		if (pDegree[v] < k) {
+			pDegree[adj->dest]--;
+		}
+
+		if (!graph->adj_arr[adj->dest].visited) {
+			if (DFSUtil_kcore(graph, adj->dest, pDegree, k)) {
+				pDegree[v]--;
+			}
+		}
+		adj = adj->next;
+ 	}
+
+	return (pDegree[v] < k);
+}
+
+/* Print the vertices with at least k connected components of
+ * the undirected graph.
+ *
+ * This is done by removing all the vertices with less than
+ * k degree.
+ * */
+void printKcoresOfGraph(graph_t *graph, int k)
+{
+	int idx;
+	int *pDegree;
+
+	if(!	graph || k <= 0 || (graph->vertices == 0)) {
+		printf("%s: BAD INPUT\n", __FUNCTION__);
+		return;
+	}
+
+	pDegree = (int *)malloc(sizeof(int) * graph->vertices);
+	if (!pDegree) {
+		return;
+	}
+	memset(pDegree, 0, sizeof(int) * graph->vertices);
+	reset_visited(graph);
+
+	/*Update the degree array*/
+	for (idx = 0; idx < graph->vertices; idx++) {
+		pDegree[idx] = graph->adj_arr[idx].cnt;
+	}
+
+	for (idx = 0; idx < graph->vertices; idx++) {
+		if (!graph->adj_arr[idx].visited) {
+			DFSUtil_kcore(graph, idx, pDegree, k);
+		}
+	}
+
+
+	for(idx = 0; idx < graph->vertices; idx++) {
+		if (pDegree[idx] > k) {
+			adj_node_t *adj = graph->adj_arr[idx].head;
+			printf("\n[%d] :  ", idx);
+			while (adj) {
+				if (pDegree[adj->dest] >=k) {
+					printf("-> %d", adj->dest);
+				}
+				adj = adj->next;
+			}
+		}
+	}
+
+	free(pDegree);
+	return;
+}
+
