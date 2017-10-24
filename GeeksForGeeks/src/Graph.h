@@ -47,5 +47,6 @@ void bfs_traversal_graph(graph_t* graph, int v);
 void dfs_traversal_graph(graph_t *graph, int v);
 void topological_sort_graph(graph_t* graph);
 void lonest_path_directed_acyclic_graph(graph_t *graph, int src);
+int find_mother_vertex_in_graph(graph_t* graph, int* mother_vertex);
 
 #endif /* GRAPH_H_ */

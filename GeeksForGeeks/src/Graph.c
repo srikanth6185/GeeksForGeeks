@@ -134,8 +134,8 @@ void print_graph(graph_t *graph)
             }
         }
     }
-
-    return;
+    printf("\n")
+;    return;
 }
 
 void reset_visited(graph_t *g)
@@ -300,10 +300,19 @@ void lonest_path_directed_acyclic_graph(graph_t *graph, int src)
      * zero.*/
     graph->adj_arr[src].dist = 0;
 
-    /*Prep the stack with DFS walk of the nodes.*/
+    /* Prep the stack with DFS walk of the nodes.
+     * AKA topological sort.
+     * Note:
+     * I think we can do this only for the source vertex.
+     * I have not seen any evidence to the contrary.
+     * Again assuming that we need longest path only for
+     * the src node to all other nodes.
+     *
+     * O(V+E)
+     * */
     for(idx = 0; idx < graph->vertices; idx++) {
 		if (!graph->adj_arr[idx].visited) {
-			topological_sort_util(graph, idx, st);
+			topological_sort_util(graph, src, st);
 		}
     }
 
@@ -324,9 +333,72 @@ void lonest_path_directed_acyclic_graph(graph_t *graph, int src)
     }
 
     for(idx = 0; idx < graph->vertices; idx++) {
+    	if (graph->adj_arr[idx].dist != NEG_INFINITY) {
     		printf("vertex: %d dist: %d\n", idx, graph->adj_arr[idx].dist);
+    	}
     }
 
     st_destroy(st);
     return;
+}
+
+
+void DFSUtil(graph_t *graph, int vertex)
+{
+	adj_node_t *adj = graph->adj_arr[vertex].head;
+	graph->adj_arr[vertex].visited = 1;
+
+	while(adj) {
+		if (!graph->adj_arr[adj->dest].visited) {
+			DFSUtil(graph, adj->dest);
+		}
+		adj = adj->next;
+	}
+}
+
+/* Finding mother vertex.
+ *
+ * Perform DFS on all vertices.
+ * Store the vertex that was traversed last.
+ * That v must be the mother vertex.
+ * Return -1 if not.
+ *
+ * Koseraju's algorithm
+ * Applicable to Directed connected graph only
+ *
+ * Undirected connected - Every vertex is a mother vertex.
+ * Undirected/Directed Disconnected - No mother vertex.
+ *                                    All nodes are not reachable
+ * */
+int find_mother_vertex_in_graph(graph_t* graph, int* mother_vertex)
+{
+	int idx, v;
+
+	if (!graph || !mother_vertex || !graph->vertices) {
+		return -1;
+	}
+
+	reset_visited(graph);
+
+	for(idx = 0; idx < graph->vertices; idx++) {
+		if (!graph->adj_arr[idx].visited) {
+			DFSUtil(graph, idx);
+			v = idx;
+		}
+	}
+
+	reset_visited(graph);
+	DFSUtil(graph, v);
+
+	for(idx = 0; idx < graph->vertices; idx++) {
+		if (!graph->adj_arr[idx].visited) {
+			printf("No Mother vertex found \n");
+			return -1;
+		}
+	}
+
+	*mother_vertex = v;
+	printf("Mother vertex: %d \n", v);
+	return 1;
+
 }

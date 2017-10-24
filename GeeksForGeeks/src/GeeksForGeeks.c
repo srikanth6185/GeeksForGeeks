@@ -914,13 +914,34 @@ void test_longest_path_acyclic_directed_graph(void)
     destroy_graph(graph);
 }
 
+void test_mother_vertex(void)
+{
+	int v;
+    graph_t *graph = test_create_graph(7);
+
+    add_edge(graph, 0, 1, DIRECTIONAL, 0);
+    add_edge(graph, 0, 2, DIRECTIONAL, 0);
+    add_edge(graph, 1, 3, DIRECTIONAL, 0);
+    add_edge(graph, 4, 1, DIRECTIONAL, 0);
+    add_edge(graph, 6, 4, DIRECTIONAL, 0);
+    add_edge(graph, 5, 6, DIRECTIONAL, 0);
+    add_edge(graph, 5, 2, DIRECTIONAL, 0);
+    add_edge(graph, 6, 0, DIRECTIONAL, 0);
+
+    print_graph(graph);
+
+    find_mother_vertex_in_graph(graph, &v);
+    destroy_graph(graph);
+}
+
 void test_graph_all(void)
 {
     //test_gr_create_print();
     //test_gr_bfs();
     //test_gr_dfs();
     //test_topological_sort();
-    test_longest_path_acyclic_directed_graph();
+    //test_longest_path_acyclic_directed_graph();
+	test_mother_vertex();
 }
 
 /*Main program to test all the problems.*/
