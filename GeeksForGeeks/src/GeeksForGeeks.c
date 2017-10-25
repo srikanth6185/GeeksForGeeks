@@ -934,6 +934,38 @@ void test_mother_vertex(void)
     destroy_graph(graph);
 }
 
+void test_print_kcores(void)
+{
+	int k = 3;
+
+	graph_t *graph = test_create_graph(9);
+
+	add_edge(graph, 0, 1, DIRECTIONAL, 0);
+	add_edge(graph, 0, 2, DIRECTIONAL, 0);
+	add_edge(graph, 1, 2, DIRECTIONAL, 0);
+	add_edge(graph, 1, 5, DIRECTIONAL, 0);
+	add_edge(graph, 2, 3, DIRECTIONAL, 0);
+	add_edge(graph, 2, 4, DIRECTIONAL, 0);
+	add_edge(graph, 2, 5, DIRECTIONAL, 0);
+	add_edge(graph, 2, 6, DIRECTIONAL, 0);
+	add_edge(graph, 3, 4, DIRECTIONAL, 0);
+	add_edge(graph, 3, 6, DIRECTIONAL, 0);
+	add_edge(graph, 3, 7, DIRECTIONAL, 0);
+	add_edge(graph, 4, 6, DIRECTIONAL, 0);
+	add_edge(graph, 4, 7, DIRECTIONAL, 0);
+	add_edge(graph, 5, 6, DIRECTIONAL, 0);
+	add_edge(graph, 5, 8, DIRECTIONAL, 0);
+	add_edge(graph, 6, 7, DIRECTIONAL, 0);
+	add_edge(graph, 6, 8, DIRECTIONAL, 0);
+
+	print_graph(graph);
+
+	printKcoresOfGraph(graph, k);
+
+	destroy_graph(graph);
+	return;
+}
+
 void test_graph_all(void)
 {
     //test_gr_create_print();
@@ -941,7 +973,8 @@ void test_graph_all(void)
     //test_gr_dfs();
     //test_topological_sort();
     //test_longest_path_acyclic_directed_graph();
-	test_mother_vertex();
+	//test_mother_vertex();
+	test_print_kcores();
 }
 
 /*Main program to test all the problems.*/
