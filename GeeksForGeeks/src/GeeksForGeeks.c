@@ -15,6 +15,8 @@
 #include "BinaryTree.h"
 #include "Queue.h"
 #include "Graph.h"
+#include "HackerRankChallenge.h"
+#include "Strings.h"
 
 void test_ll(void)
 {
@@ -977,12 +979,25 @@ void test_graph_all(void)
 	test_print_kcores();
 }
 
+void test_strings(void)
+{
+	char string[10] = "srikanth";
+	print_str_rec(string);
+}
+void test_hackerRank_Challenge(void)
+{
+	//test_api();
+	return;
+}
+
 /*Main program to test all the problems.*/
 int main(void) {
     //test_ll_all();
     //test_q_all();
     //test_bt_all();
-    test_graph_all();
+    //test_graph_all();
+	//test_hackerRank_Challenge();
+	test_strings();
     printf("\nALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }
