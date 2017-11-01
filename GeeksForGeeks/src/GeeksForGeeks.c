@@ -336,8 +336,8 @@ void test_alt_split_list(void)
 
 void test_reverse_kll(void)
 {
-    int n1 = 8;
-    int arr1[8] = {1,2,3,4,5,6,7,8};
+    int n1 = 11;
+    int arr1[11] = {1,2,3,4,5,6,7,8,9,10,11};
     node_t *list1, *curr;
     if (ll_create(&list1, n1, arr1) == LL_FALSE) {
         printf("%s: list 1 create failure!!!\n", __FUNCTION__);
@@ -345,12 +345,12 @@ void test_reverse_kll(void)
     }
 
     ll_print(list1);
-    //list1 = ll_reverse_size_k(list1, 3);
-    list1 = ll_rec_rev_k(list1,3);
-    ll_print(list1);
+    ////list1 = ll_reverse_size_k(list1, 3);
+    //list1 = ll_rec_rev_k(list1,3);
+    //ll_print(list1);
 
-    list1 = ll_segregate_even_odd(list1);
-    ll_print(list1);
+    //list1 = ll_segregate_even_odd(list1);
+    //ll_print(list1);
 
     curr = list1;
     while (curr->next) {
@@ -358,7 +358,7 @@ void test_reverse_kll(void)
     }
 
     curr->next = list1->next->next;
-    printf("%s: list has loop : %d \n", __FUNCTION__, ll_detect_and_remove_loop(list1));
+    ll_detect_and_remove_loop(list1);
     ll_print(list1);
 
     ll_free(&list1);
@@ -505,7 +505,7 @@ void test_ll_all(void)
     //test_ll_intersection();
     //test_generic();
     //test_alt_split_list();
-    //test_reverse_kll();
+    test_reverse_kll();
     //test_merge_sort_lists();
     //test_union_intersection();
     //test_add_2_lists();
@@ -979,10 +979,10 @@ void test_graph_all(void)
 
 /*Main program to test all the problems.*/
 int main(void) {
-    //test_ll_all();
+    test_ll_all();
     //test_q_all();
     //test_bt_all();
-    test_graph_all();
+    //test_graph_all();
     printf("\nALL TESTS COMPLETE!!!\n");
     return EXIT_SUCCESS;
 }

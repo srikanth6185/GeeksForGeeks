@@ -710,10 +710,9 @@ void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
     node_t *curr = loop_node, *prev = NULL;
     printf("%s\n", __FUNCTION__);
 
-    /*Count number of nodes.*/
-    curr = curr ? curr->next : NULL;
+    /*Count number of loop nodes.*/
     while (curr) {
-        if (curr == loop_node) {
+        if (curr->next == loop_node) {
             break;
         }
         curr = curr->next;
@@ -722,7 +721,6 @@ void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
 
     curr = head;
     while (k > 0) {
-        prev = curr;
         curr = curr->next;
         k--;
     }
@@ -734,6 +732,8 @@ void ll_remove_loop_floyd(node_t *loop_node, node_t* head)
         prev = loop_node;
         loop_node = loop_node->next;
     }
+
+    printf("Loop node is %d pointing to %d \n", prev->data, prev->next->data);
 
     prev->next = NULL;
     return;
